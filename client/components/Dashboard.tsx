@@ -113,22 +113,13 @@ const Dashboard: React.FC<DashboardProps> = ({
               gap: "12px",
             }}
           >
-            <button
-              style={getButtonStyle(1)}
-              onClick={() => onTabChange(1)}
-            >
+            <button style={getButtonStyle(1)} onClick={() => onTabChange(1)}>
               1
             </button>
-            <button
-              style={getButtonStyle(2)}
-              onClick={() => onTabChange(2)}
-            >
+            <button style={getButtonStyle(2)} onClick={() => onTabChange(2)}>
               2
             </button>
-            <button
-              style={getButtonStyle(3)}
-              onClick={() => onTabChange(3)}
-            >
+            <button style={getButtonStyle(3)} onClick={() => onTabChange(3)}>
               3
             </button>
           </div>
@@ -151,7 +142,9 @@ const Dashboard: React.FC<DashboardProps> = ({
             {/* Shard Area */}
             <div style={{ display: "flex", gap: "48px" }}>
               {/* Shard Item */}
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
                 <div
                   style={{
                     width: "32px",
@@ -163,7 +156,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <div
                   style={{
                     color: "#000",
-                    fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+                    fontFamily:
+                      "Inter, -apple-system, Roboto, Helvetica, sans-serif",
                     fontSize: "24px",
                     fontWeight: "600",
                     lineHeight: "24px",
@@ -174,7 +168,9 @@ const Dashboard: React.FC<DashboardProps> = ({
               </div>
 
               {/* Backup Item */}
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
                 <div
                   style={{
                     width: "32px",
@@ -187,7 +183,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <div
                   style={{
                     color: "#000",
-                    fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+                    fontFamily:
+                      "Inter, -apple-system, Roboto, Helvetica, sans-serif",
                     fontSize: "24px",
                     fontWeight: "600",
                     lineHeight: "24px",
@@ -199,9 +196,13 @@ const Dashboard: React.FC<DashboardProps> = ({
             </div>
 
             {/* Message Area */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+            >
               {/* Vote Message */}
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
                 <svg
                   width="12"
                   height="12"
@@ -214,7 +215,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <div
                   style={{
                     color: "#000",
-                    fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+                    fontFamily:
+                      "Inter, -apple-system, Roboto, Helvetica, sans-serif",
                     fontSize: "24px",
                     fontWeight: "600",
                     lineHeight: "24px",
@@ -225,7 +227,9 @@ const Dashboard: React.FC<DashboardProps> = ({
               </div>
 
               {/* Shard Message */}
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
                 <svg
                   width="12"
                   height="12"
@@ -238,7 +242,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <div
                   style={{
                     color: "#000",
-                    fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+                    fontFamily:
+                      "Inter, -apple-system, Roboto, Helvetica, sans-serif",
                     fontSize: "24px",
                     fontWeight: "600",
                     lineHeight: "24px",
@@ -249,7 +254,9 @@ const Dashboard: React.FC<DashboardProps> = ({
               </div>
 
               {/* Committee Change Message */}
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
                 <svg
                   width="12"
                   height="12"
@@ -262,7 +269,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <div
                   style={{
                     color: "#000",
-                    fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+                    fontFamily:
+                      "Inter, -apple-system, Roboto, Helvetica, sans-serif",
                     fontSize: "24px",
                     fontWeight: "600",
                     lineHeight: "24px",
