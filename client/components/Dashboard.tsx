@@ -67,6 +67,59 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         {/* 하단 지도 영역 */}
         <div className="map-section">
+          {/* Navigation Buttons */}
+          <div style={{
+            position: 'absolute',
+            top: '24px',
+            left: '24px',
+            zIndex: 10,
+            display: 'flex',
+            gap: '12px'
+          }}>
+            <button style={{
+              padding: '20px',
+              backgroundColor: '#FFF',
+              borderRadius: '8px',
+              border: '1.25px solid #9E9E9E',
+              color: '#9E9E9E',
+              fontWeight: '700',
+              fontSize: '20px',
+              lineHeight: '20px',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}>
+              Base Committee
+            </button>
+            <button style={{
+              padding: '20px',
+              backgroundColor: '#FFF',
+              borderRadius: '8px',
+              border: '1.25px solid #6C6E82',
+              color: '#000',
+              fontWeight: '700',
+              fontSize: '20px',
+              lineHeight: '20px',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}>
+              Overview
+            </button>
+            <button style={{
+              padding: '20px',
+              backgroundColor: '#FFF',
+              borderRadius: '8px',
+              border: '1.25px solid #6C6E82',
+              color: '#000',
+              fontWeight: '700',
+              fontSize: '20px',
+              lineHeight: '20px',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}>
+              Overview
+            </button>
+          </div>
+
           <div className="map-legend">
             <div className="legend-item">
               <span className="dot" style={{background: '#d500f9'}}></span>
