@@ -1,8 +1,8 @@
 export default function ConfirmationTimeChart() {
   return (
-    <div className="flex flex-col items-end gap-1">
+    <div className="flex flex-col items-center gap-2 w-full">
       <svg
-        className="w-full"
+        className="w-full h-32"
         viewBox="0 0 684 144"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
