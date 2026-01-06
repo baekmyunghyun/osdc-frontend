@@ -149,13 +149,13 @@ const Dashboard: React.FC<DashboardProps> = ({
             }}
           >
             {/* Shard Area */}
-            <div style={{ display: "flex", gap: "36px" }}>
+            <div style={{ display: "flex", gap: "48px" }}>
               {/* Shard Item */}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div
                   style={{
-                    width: "26px",
-                    height: "26px",
+                    width: "32px",
+                    height: "32px",
                     borderRadius: "1000px",
                     backgroundColor: "#000",
                   }}
@@ -164,9 +164,9 @@ const Dashboard: React.FC<DashboardProps> = ({
                   style={{
                     color: "#000",
                     fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                    fontSize: "20px",
+                    fontSize: "24px",
                     fontWeight: "600",
-                    lineHeight: "20px",
+                    lineHeight: "24px",
                   }}
                 >
                   shard
@@ -174,23 +174,23 @@ const Dashboard: React.FC<DashboardProps> = ({
               </div>
 
               {/* Backup Item */}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div
                   style={{
-                    width: "26px",
-                    height: "26px",
+                    width: "32px",
+                    height: "32px",
                     borderRadius: "1000px",
                     backgroundColor: "#FFF",
-                    border: "1.5px solid #000",
+                    border: "2px solid #000",
                   }}
                 ></div>
                 <div
                   style={{
                     color: "#000",
                     fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                    fontSize: "20px",
+                    fontSize: "24px",
                     fontWeight: "600",
-                    lineHeight: "20px",
+                    lineHeight: "24px",
                   }}
                 >
                   backup
