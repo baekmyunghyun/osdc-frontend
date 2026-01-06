@@ -124,7 +124,8 @@ const Dashboard: React.FC<DashboardProps> = ({
             </button>
           </div>
 
-          {/* Legend Box - Right Side */}
+          {/* Legend Box - Right Side (only on screen 1) */}
+          {activeTab === 1 && (
           <div
             style={{
               position: "absolute",
@@ -281,6 +282,7 @@ const Dashboard: React.FC<DashboardProps> = ({
               </div>
             </div>
           </div>
+          )}
 
           {/* 실제 지도가 렌더링 될 영역 */}
           <div style={{ width: "100%", height: "100%", position: "relative" }}>
