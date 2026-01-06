@@ -430,7 +430,9 @@ const pinGroups: PinGroup[] = [
   },
 ];
 
-export default function WorldMap({ showShardNumbers = false }: WorldMapProps = {}) {
+export default function WorldMap({
+  showShardNumbers = false,
+}: WorldMapProps = {}) {
   // Shard numbers to display around France (x:790, y:480)
   const franceShardNumbers = [
     { num: 16, offsetX: -60, offsetY: -30 },
@@ -603,34 +605,36 @@ export default function WorldMap({ showShardNumbers = false }: WorldMapProps = {
         ))}
 
         {/* Numbered shard indicators around France */}
-        {showShardNumbers && franceShardNumbers.map((shard, index) => (
-          <div
-            key={`shard-${index}`}
-            className="absolute flex items-center justify-center"
-            style={{
-              left: `${790 + shard.offsetX}px`,
-              top: `${480 + shard.offsetY}px`,
-              width: "18px",
-              height: "18px",
-              borderRadius: "50%",
-              backgroundColor: "#000",
-              zIndex: 15,
-            }}
-          >
-            <span
+        {showShardNumbers &&
+          franceShardNumbers.map((shard, index) => (
+            <div
+              key={`shard-${index}`}
+              className="absolute flex items-center justify-center"
               style={{
-                color: "#FFF",
-                fontSize: "13px",
-                fontWeight: "800",
-                lineHeight: "13px",
-                letterSpacing: "-0.39px",
-                fontFamily: "Outfit, -apple-system, Roboto, Helvetica, sans-serif",
+                left: `${790 + shard.offsetX}px`,
+                top: `${480 + shard.offsetY}px`,
+                width: "18px",
+                height: "18px",
+                borderRadius: "50%",
+                backgroundColor: "#000",
+                zIndex: 15,
               }}
             >
-              {shard.num}
-            </span>
-          </div>
-        ))}
+              <span
+                style={{
+                  color: "#FFF",
+                  fontSize: "13px",
+                  fontWeight: "800",
+                  lineHeight: "13px",
+                  letterSpacing: "-0.39px",
+                  fontFamily:
+                    "Outfit, -apple-system, Roboto, Helvetica, sans-serif",
+                }}
+              >
+                {shard.num}
+              </span>
+            </div>
+          ))}
       </div>
     </div>
   );
