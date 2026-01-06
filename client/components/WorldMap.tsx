@@ -435,33 +435,34 @@ export default function WorldMap({
 }: WorldMapProps = {}) {
   // Shard numbers to display around France (x:790, y:480)
   const franceShardNumbers = [
-    { num: 16, offsetX: -60, offsetY: -30 },
-    { num: 16, offsetX: -40, offsetY: -30 },
-    { num: 16, offsetX: -20, offsetY: -30 },
-    { num: 15, offsetX: -60, offsetY: -10 },
-    { num: 7, offsetX: -40, offsetY: -10 },
-    { num: 19, offsetX: -20, offsetY: -10 },
-    { num: 10, offsetX: -60, offsetY: 10 },
-    { num: 10, offsetX: -40, offsetY: 10 },
-    { num: 5, offsetX: -20, offsetY: 10 },
-    { num: 19, offsetX: 0, offsetY: 10 },
-    { num: 10, offsetX: -60, offsetY: 30 },
-    { num: 5, offsetX: -40, offsetY: 30 },
-    { num: 19, offsetX: -20, offsetY: 30 },
-    { num: 17, offsetX: 50, offsetY: -30 },
-    { num: 24, offsetX: 70, offsetY: -30 },
-    { num: 24, offsetX: 90, offsetY: -30 },
-    { num: 7, offsetX: 50, offsetY: -10 },
-    { num: 14, offsetX: 70, offsetY: -10 },
-    { num: 14, offsetX: 90, offsetY: -10 },
-    { num: 15, offsetX: 50, offsetY: 10 },
-    { num: 7, offsetX: 70, offsetY: 10 },
-    { num: 19, offsetX: 90, offsetY: 10 },
-    { num: 19, offsetX: 110, offsetY: 10 },
-    { num: 10, offsetX: 50, offsetY: 30 },
-    { num: 5, offsetX: 70, offsetY: 30 },
-    { num: 19, offsetX: 90, offsetY: 30 },
-    { num: 19, offsetX: 110, offsetY: 30 },
+    // Row 1 (y: -30)
+    { num: 16, offsetX: -55, offsetY: -30 },
+    { num: 16, offsetX: -35, offsetY: -30 },
+    { num: 16, offsetX: -15, offsetY: -30 },
+    { num: 17, offsetX: 5, offsetY: -30 },
+    { num: 24, offsetX: 25, offsetY: -30 },
+    { num: 24, offsetX: 45, offsetY: -30 },
+    // Row 2 (y: -10)
+    { num: 15, offsetX: -55, offsetY: -10 },
+    { num: 7, offsetX: -35, offsetY: -10 },
+    { num: 19, offsetX: -15, offsetY: -10 },
+    { num: 7, offsetX: 5, offsetY: -10 },
+    { num: 14, offsetX: 25, offsetY: -10 },
+    { num: 14, offsetX: 45, offsetY: -10 },
+    // Row 3 (y: 10)
+    { num: 10, offsetX: -55, offsetY: 10 },
+    { num: 10, offsetX: -35, offsetY: 10 },
+    { num: 5, offsetX: -15, offsetY: 10 },
+    { num: 15, offsetX: 5, offsetY: 10 },
+    { num: 7, offsetX: 25, offsetY: 10 },
+    { num: 19, offsetX: 45, offsetY: 10 },
+    // Row 4 (y: 30)
+    { num: 10, offsetX: -55, offsetY: 30 },
+    { num: 5, offsetX: -35, offsetY: 30 },
+    { num: 19, offsetX: -15, offsetY: 30 },
+    { num: 10, offsetX: 5, offsetY: 30 },
+    { num: 5, offsetX: 25, offsetY: 30 },
+    { num: 19, offsetX: 45, offsetY: 30 },
   ];
 
   return (
@@ -612,7 +613,7 @@ export default function WorldMap({
               className="absolute flex items-center justify-center"
               style={{
                 left: `${790 + shard.offsetX}px`,
-                top: `${480 + shard.offsetY}px`,
+                top: `${580 + shard.offsetY}px`,
                 width: "18px",
                 height: "18px",
                 borderRadius: "50%",
