@@ -46,7 +46,7 @@ function getPositionPercent(lat: number, lng: number) {
 
 export default function WorldMap() {
   return (
-    <div className="relative w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+    <div className="relative w-full min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
       {/* Background decorative shapes */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Top left cluster */}
