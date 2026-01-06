@@ -51,7 +51,7 @@ export default function WorldMap() {
       <div className="absolute inset-0 pointer-events-none">
         {/* Top left cluster */}
         <svg
-          className="absolute left-0 top-[20%] w-[30%] max-w-[593px] h-auto opacity-40"
+          className="absolute left-0 top-[20%] w-[30%] max-w-[593px] h-auto opacity-70"
           viewBox="0 0 565 439"
           fill="none"
         >
@@ -63,7 +63,7 @@ export default function WorldMap() {
 
         {/* Top center */}
         <svg
-          className="absolute left-[30%] top-[4%] w-[25%] max-w-[192px] h-auto opacity-40"
+          className="absolute left-[30%] top-[4%] w-[25%] max-w-[192px] h-auto opacity-70"
           viewBox="0 0 192 226"
           fill="none"
         >
@@ -75,7 +75,7 @@ export default function WorldMap() {
 
         {/* Large top right */}
         <svg
-          className="absolute right-0 top-0 w-[65%] max-w-[1231px] h-auto opacity-40"
+          className="absolute right-0 top-0 w-[65%] max-w-[1231px] h-auto opacity-70"
           viewBox="0 0 1231 842"
           fill="none"
         >
@@ -87,7 +87,7 @@ export default function WorldMap() {
 
         {/* Bottom left */}
         <svg
-          className="absolute left-0 bottom-[15%] w-[18%] max-w-[328px] h-auto opacity-40"
+          className="absolute left-0 bottom-[15%] w-[18%] max-w-[328px] h-auto opacity-70"
           viewBox="0 0 328 350"
           fill="none"
         >
@@ -99,7 +99,7 @@ export default function WorldMap() {
 
         {/* Bottom right */}
         <svg
-          className="absolute right-0 bottom-0 w-[18%] max-w-[335px] h-auto opacity-40"
+          className="absolute right-0 bottom-0 w-[18%] max-w-[335px] h-auto opacity-70"
           viewBox="0 0 335 277"
           fill="none"
         >
@@ -111,7 +111,7 @@ export default function WorldMap() {
 
         {/* Right middle */}
         <svg
-          className="absolute right-0 top-[24%] w-[23%] max-w-[429px] h-auto opacity-40"
+          className="absolute right-0 top-[24%] w-[23%] max-w-[429px] h-auto opacity-70"
           viewBox="0 0 429 418"
           fill="none"
         >
