@@ -319,9 +319,9 @@ const CoordinationShardView: React.FC = () => {
             style={{
               color: "#000",
               fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-              fontSize: "16px",
+              fontSize: "20px",
               fontWeight: "600",
-              lineHeight: "20px",
+              lineHeight: "24px",
             }}
           >
             selective local snapshot
@@ -335,9 +335,9 @@ const CoordinationShardView: React.FC = () => {
             style={{
               color: "#000",
               fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-              fontSize: "16px",
+              fontSize: "20px",
               fontWeight: "600",
-              lineHeight: "20px",
+              lineHeight: "24px",
             }}
           >
             global snapshot
