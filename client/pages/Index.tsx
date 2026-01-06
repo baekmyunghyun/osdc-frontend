@@ -1,4 +1,6 @@
 import WorldMap from "@/components/WorldMap";
+import TPSChart from "@/components/TPSChart";
+import ConfirmationTimeChart from "@/components/ConfirmationTimeChart";
 
 export default function Index() {
   return (
@@ -69,23 +71,19 @@ export default function Index() {
         {/* Top Charts Area */}
         <div className="grid grid-cols-2 gap-4 p-6 border-b border-gray-200">
           {/* Transaction Per Second Chart */}
-          <div className="bg-white rounded border border-gray-200 p-4">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">
+          <div className="bg-white border-r border-b border-black p-10 flex flex-col justify-center items-center gap-4">
+            <h3 className="text-[28px] font-medium text-[#6C6E82] leading-7">
               Transaction Per Second
             </h3>
-            <div className="h-24 bg-gradient-to-r from-cyan-100 to-blue-100 rounded flex items-center justify-center text-gray-400 text-sm">
-              [Chart Placeholder]
-            </div>
+            <TPSChart />
           </div>
 
           {/* Transaction Confirmation Time Chart */}
-          <div className="bg-white rounded border border-gray-200 p-4">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">
+          <div className="bg-white border-r border-b border-black p-10 flex flex-col justify-center items-center gap-4">
+            <h3 className="text-[28px] font-medium text-[#6C6E82] leading-7">
               Transaction Confirmation Time
             </h3>
-            <div className="h-24 bg-gradient-to-r from-cyan-100 to-blue-100 rounded flex items-center justify-center text-gray-400 text-sm">
-              [Chart Placeholder]
-            </div>
+            <ConfirmationTimeChart />
           </div>
         </div>
 
