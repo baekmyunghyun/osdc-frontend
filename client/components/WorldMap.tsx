@@ -430,7 +430,38 @@ const pinGroups: PinGroup[] = [
   },
 ];
 
-export default function WorldMap() {
+export default function WorldMap({ showShardNumbers = false }: WorldMapProps = {}) {
+  // Shard numbers to display around France (x:790, y:480)
+  const franceShardNumbers = [
+    { num: 16, offsetX: -60, offsetY: -30 },
+    { num: 16, offsetX: -40, offsetY: -30 },
+    { num: 16, offsetX: -20, offsetY: -30 },
+    { num: 15, offsetX: -60, offsetY: -10 },
+    { num: 7, offsetX: -40, offsetY: -10 },
+    { num: 19, offsetX: -20, offsetY: -10 },
+    { num: 10, offsetX: -60, offsetY: 10 },
+    { num: 10, offsetX: -40, offsetY: 10 },
+    { num: 5, offsetX: -20, offsetY: 10 },
+    { num: 19, offsetX: 0, offsetY: 10 },
+    { num: 10, offsetX: -60, offsetY: 30 },
+    { num: 5, offsetX: -40, offsetY: 30 },
+    { num: 19, offsetX: -20, offsetY: 30 },
+    { num: 17, offsetX: 50, offsetY: -30 },
+    { num: 24, offsetX: 70, offsetY: -30 },
+    { num: 24, offsetX: 90, offsetY: -30 },
+    { num: 7, offsetX: 50, offsetY: -10 },
+    { num: 14, offsetX: 70, offsetY: -10 },
+    { num: 14, offsetX: 90, offsetY: -10 },
+    { num: 15, offsetX: 50, offsetY: 10 },
+    { num: 7, offsetX: 70, offsetY: 10 },
+    { num: 19, offsetX: 90, offsetY: 10 },
+    { num: 19, offsetX: 110, offsetY: 10 },
+    { num: 10, offsetX: 50, offsetY: 30 },
+    { num: 5, offsetX: 70, offsetY: 30 },
+    { num: 19, offsetX: 90, offsetY: 30 },
+    { num: 19, offsetX: 110, offsetY: 30 },
+  ];
+
   return (
     <div className="relative w-full h-full bg-[#EEEEEE] flex items-center justify-center overflow-hidden">
       {/* Fixed size container matching Figma: 1850x1000 */}
