@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import LocationPin from "./LocationPin";
 
 interface PinGroup {
@@ -10,6 +10,22 @@ interface PinGroup {
 
 interface WorldMapProps {
   showShardNumbers?: boolean;
+}
+
+// Coordinate constants for France & India base locations
+const SHARD_X_OFFSET_FR = 790;
+const SHARD_Y_OFFSET_FR = 580;
+const SHARD_X_OFFSET_IN = 1157;
+const SHARD_Y_OFFSET_IN = 397;
+
+interface AnimParticle {
+  fromX: number;
+  fromY: number;
+  toX: number;
+  toY: number;
+  startTime: number;
+  duration: number;
+  color: string;
 }
 
 const pinGroups: PinGroup[] = [
@@ -504,10 +520,112 @@ export default function WorldMap({
     { num: 14, offsetX: 45, offsetY: 40 },
   ];
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const particlesRef = useRef<AnimParticle[]>([]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    // 1. Setup Canvas Overlay
+    const canvas = document.createElement("canvas");
+    canvas.style.position = "absolute";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.pointerEvents = "none";
+    canvas.style.zIndex = "9999"; // Topmost
+
+    // Fixed size to match the map container logic
+    canvas.width = 1850;
+    canvas.height = 1000;
+
+    containerRef.current.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+
+    // 2. Animation Data
+    const addParticle = (from: {x:number, y:number}, to: {x:number, y:number}, color: string) => {
+        particlesRef.current.push({
+            fromX: from.x,
+            fromY: from.y,
+            toX: to.x,
+            toY: to.y,
+            startTime: Date.now(),
+            duration: 800 + Math.random() * 800, // 0.8s - 1.6s
+            color: color
+        });
+    };
+
+    // 3. Render Loop
+    let animationFrameId: number;
+
+    const render = () => {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const now = Date.now();
+
+        // Iterate backwards to allow safe removal
+        for (let i = particlesRef.current.length - 1; i >= 0; i--) {
+            const p = particlesRef.current[i];
+            const elapsed = now - p.startTime;
+            const t = elapsed / p.duration;
+
+            if (t >= 1) {
+                particlesRef.current.splice(i, 1);
+                continue;
+            }
+
+            // Linear Interpolation
+            const curX = (1 - t) * p.fromX + t * p.toX;
+            const curY = (1 - t) * p.fromY + t * p.toY;
+
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(curX, curY, 2.5, 0, Math.PI * 2); // Radius 2.5
+            ctx.fill();
+        }
+
+        animationFrameId = requestAnimationFrame(render);
+    };
+    render();
+
+    // 4. Random Spawner Loop (The requested random behaviour)
+    // Spawns new particles every 50ms (20 per second)
+    const intervalId = setInterval(() => {
+        // Randomly pick direction
+        const fromFrance = Math.random() > 0.5;
+        const sourceArr = fromFrance ? franceShardNumbers : indiaShardNumbers;
+        const targetArr = fromFrance ? indiaShardNumbers : franceShardNumbers;
+        
+        const sourceBaseX = fromFrance ? SHARD_X_OFFSET_FR : SHARD_X_OFFSET_IN;
+        const sourceBaseY = fromFrance ? SHARD_Y_OFFSET_FR : SHARD_Y_OFFSET_IN;
+        const targetBaseX = fromFrance ? SHARD_X_OFFSET_IN : SHARD_X_OFFSET_FR;
+        const targetBaseY = fromFrance ? SHARD_Y_OFFSET_IN : SHARD_Y_OFFSET_FR;
+
+        // Pick random nodes
+        const startNode = sourceArr[Math.floor(Math.random() * sourceArr.length)];
+        const endNode = targetArr[Math.floor(Math.random() * targetArr.length)];
+
+        addParticle(
+            { x: sourceBaseX + startNode.offsetX, y: sourceBaseY + startNode.offsetY },
+            { x: targetBaseX + endNode.offsetX, y: targetBaseY + endNode.offsetY },
+            "#1e22e9ff" // Black colour as requested
+        );
+
+    }, 50);
+
+    return () => {
+        clearInterval(intervalId);
+        cancelAnimationFrame(animationFrameId);
+        canvas.remove();
+    };
+  }, []); // Run linearly on mount
+
   return (
     <div className="relative w-full h-full bg-[#EEEEEE] flex items-center justify-center overflow-hidden">
       {/* Fixed size container matching Figma: 1850x1000 */}
       <div
+        ref={containerRef}
         className="relative bg-[#EEEEEE] overflow-visible flex-shrink-0"
         style={{ width: "1850px", height: "1000px" }}
       >
