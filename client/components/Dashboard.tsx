@@ -114,13 +114,13 @@ const Dashboard: React.FC<DashboardProps> = ({
             }}
           >
             <button style={getButtonStyle(1)} onClick={() => onTabChange(1)}>
-              1
+              Normal Case
             </button>
             <button style={getButtonStyle(2)} onClick={() => onTabChange(2)}>
-              2
+              Overview
             </button>
             <button style={getButtonStyle(3)} onClick={() => onTabChange(3)}>
-              3
+              Committe Change Case
             </button>
           </div>
 
