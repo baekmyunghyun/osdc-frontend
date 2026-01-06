@@ -163,13 +163,13 @@ const pinGroups: PinGroup[] = [
   },
   // Sweden
   {
-    x: 957,
-    y: 246,
+    x: 777,
+    y: 110,
     country: "se",
     bgSvg: (
       <svg
         className="absolute"
-        style={{ left: "875px", top: "136px", width: "250px", height: "250px" }}
+        style={{ left: "695px", top: "0px", width: "250px", height: "250px" }}
         viewBox="0 0 250 250"
         fill="none"
       >
