@@ -148,6 +148,7 @@ export default function WorldMap() {
               top: `${group.y}px`,
               width: `${group.bgWidth}px`,
               height: `${group.bgHeight}px`,
+              position: 'relative',
             }}
           >
             {/* Semi-transparent rounded background */}
