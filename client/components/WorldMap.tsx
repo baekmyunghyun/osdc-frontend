@@ -13,11 +13,11 @@ interface WorldMapProps {
   activeTab?: number;
 }
 
-// Coordinate constants for France & India base locations
-const SHARD_X_OFFSET_FR = 790;
-const SHARD_Y_OFFSET_FR = 580;
-const SHARD_X_OFFSET_IN = 1157;
-const SHARD_Y_OFFSET_IN = 397;
+// Coordinate constants for Shard0 & Shard1 base locations
+const SHARD_X_OFFSET_0 = 790;
+const SHARD_Y_OFFSET_0 = 580;
+const SHARD_X_OFFSET_1 = 1157;
+const SHARD_Y_OFFSET_1 = 397;
 
 interface AnimParticle {
   fromX: number;
@@ -223,40 +223,52 @@ export default function WorldMap({
   showShardNumbers = false,
   activeTab = 1,
 }: WorldMapProps) {
-  // Shard numbers to display around France (x:790, y:480)
-  const franceShardNumbers = [
-    // Row 1 (y: -30)
-    { num: 16, offsetX: -55, offsetY: -30 },
-    { num: 16, offsetX: -35, offsetY: -30 },
-    { num: 16, offsetX: -15, offsetY: -30 },
-    { num: 17, offsetX: 5, offsetY: -30 },
-    { num: 24, offsetX: 25, offsetY: -30 },
-    { num: 24, offsetX: 45, offsetY: -30 },
-    // Row 2 (y: -10)
-    { num: 15, offsetX: -55, offsetY: -10 },
-    { num: 7, offsetX: -35, offsetY: -10 },
-    { num: 19, offsetX: -15, offsetY: -10 },
-    { num: 7, offsetX: 5, offsetY: -10 },
-    { num: 14, offsetX: 25, offsetY: -10 },
-    { num: 14, offsetX: 45, offsetY: -10 },
-    // Row 3 (y: 10)
-    { num: 10, offsetX: -55, offsetY: 10 },
-    { num: 10, offsetX: -35, offsetY: 10 },
-    { num: 5, offsetX: -15, offsetY: 10 },
-    { num: 15, offsetX: 5, offsetY: 10 },
-    { num: 7, offsetX: 25, offsetY: 10 },
-    { num: 19, offsetX: 45, offsetY: 10 },
-    // Row 4 (y: 30)
-    { num: 10, offsetX: -55, offsetY: 30 },
-    { num: 5, offsetX: -35, offsetY: 30 },
-    { num: 19, offsetX: -15, offsetY: 30 },
-    { num: 10, offsetX: 5, offsetY: 30 },
-    { num: 5, offsetX: 25, offsetY: 30 },
-    { num: 19, offsetX: 45, offsetY: 30 },
+  // Shard numbers to display around Shard0 (Distributed across available map pins)
+  // Base coordinate reference: x:790, y:580
+  const shard0 = [
+    // US Pin 2 (x: 348, y: 281) -> Offset approx (-442, -299)
+    { num: 16, offsetX: -452, offsetY: -309 },
+    { num: 16, offsetX: -432, offsetY: -309 },
+    { num: 16, offsetX: -442, offsetY: -289 },
+    
+    // US Pin 3 (x: 300, y: 495) -> Offset approx (-490, -85)
+    { num: 17, offsetX: -500, offsetY: -95 },
+    { num: 24, offsetX: -480, offsetY: -95 },
+    { num: 24, offsetX: -490, offsetY: -75 },
+
+    // Germany (x: 939, y: 289) -> Offset approx (149, -291)
+    { num: 15, offsetX: 139, offsetY: -301 },
+    { num: 7, offsetX: 159, offsetY: -301 },
+    { num: 19, offsetX: 149, offsetY: -281 },
+    
+    // Singapore (x: 1267, y: 485) -> Offset approx (477, -95)
+    { num: 7, offsetX: 467, offsetY: -105 },
+    { num: 14, offsetX: 487, offsetY: -105 },
+    { num: 14, offsetX: 477, offsetY: -85 },
+
+    // Hong Kong (x: 1347, y: 330) -> Offset approx (557, -250)
+    { num: 10, offsetX: 547, offsetY: -260 },
+    { num: 10, offsetX: 567, offsetY: -260 },
+    { num: 5, offsetX: 557, offsetY: -240 },
+
+    // South Korea (x: 1540, y: 350) -> Offset approx (750, -230)
+    { num: 15, offsetX: 740, offsetY: -240 },
+    { num: 7, offsetX: 760, offsetY: -240 },
+    { num: 19, offsetX: 750, offsetY: -220 },
+
+    // Japan 1 (x: 1515, y: 470) -> Offset approx (725, -110)
+    { num: 10, offsetX: 715, offsetY: -120 },
+    { num: 5, offsetX: 735, offsetY: -120 },
+    { num: 19, offsetX: 725, offsetY: -100 },
+
+    // Japan 2 (x: 1653, y: 400) -> Offset approx (863, -180)
+    { num: 10, offsetX: 853, offsetY: -190 },
+    { num: 5, offsetX: 873, offsetY: -190 },
+    { num: 19, offsetX: 863, offsetY: -170 },
   ];
 
-  // Shard numbers to display around India (approx center x:1157, y:397)
-  const indiaShardNumbers = [
+  // Shard numbers to display around Shard1 (approx center x:1157, y:397)
+  const shard1 = [
     // Row 1 (y: -40)
     { num: 12, offsetX: -55, offsetY: -40 },
     { num: 8, offsetX: -35, offsetY: -40 },
@@ -367,14 +379,14 @@ export default function WorldMap({
     // Spawns new particles every 50ms (20 per second)
     const intervalId = setInterval(() => {
         // Randomly pick direction
-        const fromFrance = Math.random() > 0.5;
-        const sourceArr = fromFrance ? franceShardNumbers : indiaShardNumbers;
-        const targetArr = fromFrance ? indiaShardNumbers : franceShardNumbers;
+        const fromShard0 = Math.random() > 0.5;
+        const sourceArr = fromShard0 ? shard0 : shard1;
+        const targetArr = fromShard0 ? shard1 : shard0;
         
-        const sourceBaseX = fromFrance ? SHARD_X_OFFSET_FR : SHARD_X_OFFSET_IN;
-        const sourceBaseY = fromFrance ? SHARD_Y_OFFSET_FR : SHARD_Y_OFFSET_IN;
-        const targetBaseX = fromFrance ? SHARD_X_OFFSET_IN : SHARD_X_OFFSET_FR;
-        const targetBaseY = fromFrance ? SHARD_Y_OFFSET_IN : SHARD_Y_OFFSET_FR;
+        const sourceBaseX = fromShard0 ? SHARD_X_OFFSET_0 : SHARD_X_OFFSET_1;
+        const sourceBaseY = fromShard0 ? SHARD_Y_OFFSET_0 : SHARD_Y_OFFSET_1;
+        const targetBaseX = fromShard0 ? SHARD_X_OFFSET_1 : SHARD_X_OFFSET_0;
+        const targetBaseY = fromShard0 ? SHARD_Y_OFFSET_1 : SHARD_Y_OFFSET_0;
 
         // Pick random nodes
         const startNode = sourceArr[Math.floor(Math.random() * sourceArr.length)];
@@ -536,15 +548,15 @@ export default function WorldMap({
           </div>
         ))}
 
-        {/* Numbered shard indicators around France */}
+        {/* Numbered shard indicators around Shard0 */}
         {showShardNumbers &&
-          franceShardNumbers.map((shard, index) => (
+          shard0.map((shard, index) => (
             <div
-              key={`shard-${index}`}
+              key={`shard0-${index}`}
               className="absolute flex items-center justify-center"
               style={{
-                left: `${790 + shard.offsetX}px`,
-                top: `${580 + shard.offsetY}px`,
+                left: `${SHARD_X_OFFSET_0 + shard.offsetX}px`,
+                top: `${SHARD_Y_OFFSET_0 + shard.offsetY}px`,
                 width: "18px",
                 height: "18px",
                 borderRadius: "50%",
@@ -568,15 +580,15 @@ export default function WorldMap({
             </div>
           ))}
 
-        {/* Numbered shard indicators around India */}
+        {/* Numbered shard indicators around Shard1 */}
         {showShardNumbers &&
-          indiaShardNumbers.map((shard, index) => (
+          shard1.map((shard, index) => (
             <div
-              key={`shard-in-${index}`}
+              key={`shard1-${index}`}
               className="absolute flex items-center justify-center"
               style={{
-                left: `${1153 + shard.offsetX}px`,
-                top: `${397 + shard.offsetY}px`,
+                left: `${SHARD_X_OFFSET_1 + shard.offsetX}px`,
+                top: `${SHARD_Y_OFFSET_1 + shard.offsetY}px`,
                 width: "18px",
                 height: "18px",
                 borderRadius: "50%",
