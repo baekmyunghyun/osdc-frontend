@@ -140,12 +140,12 @@ const Dashboard: React.FC<DashboardProps> = ({
               top: "24px",
               right: "24px",
               zIndex: 10,
-              padding: "16px",
+              padding: "24px",
               backgroundColor: "#E9E9EA",
-              border: "1px solid #000",
+              border: "2px solid #000",
               display: "flex",
               flexDirection: "column",
-              gap: "20px",
+              gap: "28px",
             }}
           >
             {/* Shard Area */}
