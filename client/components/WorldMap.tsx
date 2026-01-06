@@ -465,6 +465,45 @@ export default function WorldMap({
     { num: 19, offsetX: 45, offsetY: 30 },
   ];
 
+  // Shard numbers to display around India (approx center x:1157, y:397)
+  const indiaShardNumbers = [
+    // Row 1 (y: -40)
+    { num: 12, offsetX: -55, offsetY: -40 },
+    { num: 8, offsetX: -35, offsetY: -40 },
+    { num: 15, offsetX: -15, offsetY: -40 },
+    { num: 20, offsetX: 5, offsetY: -40 },
+    { num: 5, offsetX: 25, offsetY: -40 },
+    { num: 11, offsetX: 45, offsetY: -40 },
+    // Row 2 (y: -20)
+    { num: 18, offsetX: -55, offsetY: -20 },
+    { num: 22, offsetX: -35, offsetY: -20 },
+    { num: 9, offsetX: -15, offsetY: -20 },
+    { num: 14, offsetX: 5, offsetY: -20 },
+    { num: 7, offsetX: 25, offsetY: -20 },
+    { num: 25, offsetX: 45, offsetY: -20 },
+    // Row 3 (y: 0)
+    { num: 30, offsetX: -55, offsetY: 0 },
+    { num: 16, offsetX: -35, offsetY: 0 },
+    { num: 4, offsetX: -15, offsetY: 0 },
+    { num: 21, offsetX: 5, offsetY: 0 },
+    { num: 12, offsetX: 25, offsetY: 0 },
+    { num: 19, offsetX: 45, offsetY: 0 },
+    // Row 4 (y: 20)
+    { num: 6, offsetX: -55, offsetY: 20 },
+    { num: 13, offsetX: -35, offsetY: 20 },
+    { num: 28, offsetX: -15, offsetY: 20 },
+    { num: 10, offsetX: 5, offsetY: 20 },
+    { num: 3, offsetX: 25, offsetY: 20 },
+    { num: 17, offsetX: 45, offsetY: 20 },
+    // Row 5 (y: 40)
+    { num: 15, offsetX: -55, offsetY: 40 },
+    { num: 9, offsetX: -35, offsetY: 40 },
+    { num: 23, offsetX: -15, offsetY: 40 },
+    { num: 11, offsetX: 5, offsetY: 40 },
+    { num: 8, offsetX: 25, offsetY: 40 },
+    { num: 14, offsetX: 45, offsetY: 40 },
+  ];
+
   return (
     <div className="relative w-full h-full bg-[#EEEEEE] flex items-center justify-center overflow-hidden">
       {/* Fixed size container matching Figma: 1850x1000 */}
@@ -624,7 +663,39 @@ export default function WorldMap({
               <span
                 style={{
                   color: "#FFF",
-                  fontSize: "10px",
+                  fontSize: "9px",
+                  fontWeight: "800",
+                  lineHeight: "10px",
+                  letterSpacing: "-0.3px",
+                  fontFamily:
+                    "Outfit, -apple-system, Roboto, Helvetica, sans-serif",
+                }}
+              >
+                {shard.num}
+              </span>
+            </div>
+          ))}
+
+        {/* Numbered shard indicators around India */}
+        {showShardNumbers &&
+          indiaShardNumbers.map((shard, index) => (
+            <div
+              key={`shard-in-${index}`}
+              className="absolute flex items-center justify-center"
+              style={{
+                left: `${1153 + shard.offsetX}px`,
+                top: `${397 + shard.offsetY}px`,
+                width: "18px",
+                height: "18px",
+                borderRadius: "50%",
+                backgroundColor: "#000",
+                zIndex: 15,
+              }}
+            >
+              <span
+                style={{
+                  color: "#FFF",
+                  fontSize: "9px",
                   fontWeight: "800",
                   lineHeight: "10px",
                   letterSpacing: "-0.3px",
