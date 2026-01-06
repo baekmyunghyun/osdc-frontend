@@ -2,6 +2,7 @@ import WorldMap from "@/components/WorldMap";
 import Dashboard from "@/components/Dashboard";
 import TPSChart from "@/components/charts/TPSChart";
 import LatencyChart from "@/components/charts/LatencyChart";
+import CoordinationShardView from "@/components/CoordinationShardView";
 import { useState, useEffect } from "react";
 
 interface TimeSeriesData {
