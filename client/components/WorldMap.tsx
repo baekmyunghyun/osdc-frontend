@@ -2,38 +2,193 @@ import LocationPin from "./LocationPin";
 
 interface PinLocation {
   country: string;
-  x: number; // pixel position from left
-  y: number; // pixel position from top
+  offsetX: number; // offset from group center
+  offsetY: number; // offset from group center
 }
 
-// Pixel-based positions matching the Figma design (1850x1000 container)
-const locations: PinLocation[] = [
-  // North America - Top Left cluster
-  { country: "ca", x: 286, y: 230 },
-  { country: "us", x: 209, y: 379 },
-  { country: "us", x: 308, y: 325 },
-  { country: "us", x: 146, y: 338 },
+interface PinGroup {
+  x: number; // group center x position
+  y: number; // group center y position
+  bgWidth: number; // background width
+  bgHeight: number; // background height
+  pins: PinLocation[];
+}
+
+// Pin groups matching the Figma design (1850x1000 container)
+const pinGroups: PinGroup[] = [
+  // North America - Top Left cluster (multiple US pins)
+  {
+    x: 200,
+    y: 240,
+    bgWidth: 192,
+    bgHeight: 110,
+    pins: [
+      { country: "ca", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 240,
+    y: 360,
+    bgWidth: 132,
+    bgHeight: 117,
+    pins: [
+      { country: "us", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 330,
+    y: 345,
+    bgWidth: 128,
+    bgHeight: 112,
+    pins: [
+      { country: "us", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 320,
+    y: 265,
+    bgWidth: 247,
+    bgHeight: 111,
+    pins: [
+      { country: "us", offsetX: 0, offsetY: -20 },
+    ],
+  },
   
   // Europe cluster
-  { country: "ie", x: 602, y: 242 },
-  { country: "uk", x: 663, y: 238 },
-  { country: "se", x: 777, y: 136 },
-  { country: "de", x: 762, y: 283 },
-  { country: "fr", x: 664, y: 508 },
+  {
+    x: 520,
+    y: 250,
+    bgWidth: 247,
+    bgHeight: 247,
+    pins: [
+      { country: "ie", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 670,
+    y: 245,
+    bgWidth: 250,
+    bgHeight: 250,
+    pins: [
+      { country: "uk", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 790,
+    y: 155,
+    bgWidth: 250,
+    bgHeight: 250,
+    pins: [
+      { country: "se", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 775,
+    y: 290,
+    bgWidth: 221,
+    bgHeight: 221,
+    pins: [
+      { country: "de", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 685,
+    y: 520,
+    bgWidth: 124,
+    bgHeight: 113,
+    pins: [
+      { country: "fr", offsetX: 0, offsetY: -20 },
+    ],
+  },
   
-  // Asia cluster  
-  { country: "in", x: 1022, y: 316 },
-  { country: "sg", x: 1059, y: 447 },
-  { country: "hk", x: 1176, y: 396 },
-  { country: "kr", x: 1350, y: 305 },
-  { country: "jp", x: 1515, y: 456 },
-  { country: "jp", x: 1373, y: 499 },
+  // Asia cluster
+  {
+    x: 1042,
+    y: 325,
+    bgWidth: 134,
+    bgHeight: 133,
+    pins: [
+      { country: "in", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 1085,
+    y: 445,
+    bgWidth: 224,
+    bgHeight: 224,
+    pins: [
+      { country: "sg", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 1196,
+    y: 405,
+    bgWidth: 195,
+    bgHeight: 195,
+    pins: [
+      { country: "hk", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 1370,
+    y: 310,
+    bgWidth: 182,
+    bgHeight: 260,
+    pins: [
+      { country: "kr", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 1393,
+    y: 505,
+    bgWidth: 179,
+    bgHeight: 179,
+    pins: [
+      { country: "jp", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  {
+    x: 1535,
+    y: 470,
+    bgWidth: 125,
+    bgHeight: 209,
+    pins: [
+      { country: "jp", offsetX: 0, offsetY: -20 },
+    ],
+  },
   
   // South America
-  { country: "br", x: 323, y: 703 },
+  {
+    x: 340,
+    y: 715,
+    bgWidth: 219,
+    bgHeight: 219,
+    pins: [
+      { country: "br", offsetX: 0, offsetY: -20 },
+    ],
+  },
   
   // Oceania
-  { country: "au", x: 1419, y: 744 },
+  {
+    x: 1439,
+    y: 760,
+    bgWidth: 119,
+    bgHeight: 113,
+    pins: [
+      { country: "au", offsetX: 0, offsetY: -20 },
+    ],
+  },
+  
+  // North America additional cluster
+  {
+    x: 152,
+    y: 445,
+    bgWidth: 238,
+    bgHeight: 238,
+    pins: [
+      { country: "us", offsetX: 0, offsetY: -20 },
+    ],
+  },
 ];
 
 export default function WorldMap() {
@@ -125,19 +280,39 @@ export default function WorldMap() {
           </svg>
         </div>
 
-        {/* Location pins with semi-transparent backgrounds */}
-        {locations.map((location, index) => (
+        {/* Location pins with grouped semi-transparent backgrounds */}
+        {pinGroups.map((group, groupIndex) => (
           <div
-            key={index}
+            key={groupIndex}
             className="absolute"
             style={{
-              left: `${location.x}px`,
-              top: `${location.y}px`,
+              left: `${group.x}px`,
+              top: `${group.y}px`,
             }}
           >
-            {/* Semi-transparent rounded background */}
-            <div className="absolute left-1/2 top-8 -translate-x-1/2 bg-black/15 rounded-[20px] px-8 py-6 -z-10" />
-            <LocationPin country={location.country} />
+            {/* Semi-transparent rounded background for the group */}
+            <div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/15 rounded-[20px] -z-10"
+              style={{
+                width: `${group.bgWidth}px`,
+                height: `${group.bgHeight}px`,
+              }}
+            />
+            
+            {/* Pins within the group */}
+            {group.pins.map((pin, pinIndex) => (
+              <div
+                key={pinIndex}
+                className="absolute"
+                style={{
+                  left: `${pin.offsetX}px`,
+                  top: `${pin.offsetY}px`,
+                  transform: 'translate(-50%, -100%)',
+                }}
+              >
+                <LocationPin country={pin.country} />
+              </div>
+            ))}
           </div>
         ))}
       </div>
