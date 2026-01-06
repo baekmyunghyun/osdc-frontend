@@ -1,3 +1,4 @@
+import React from "react";
 import LocationPin from "./LocationPin";
 
 interface PinGroup {
