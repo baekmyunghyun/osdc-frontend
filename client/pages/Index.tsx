@@ -6,7 +6,7 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Left Sidebar - Statistics */}
-      <div className="w-64 bg-white border-r border-gray-200 p-6 overflow-y-auto">
+      <div className="w-56 bg-white border-r border-black p-6 overflow-y-auto">
         <div className="space-y-8">
           {/* Total TPS */}
           <div>
