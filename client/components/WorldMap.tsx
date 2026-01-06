@@ -149,7 +149,7 @@ export default function WorldMap() {
                 top: `${group.y}px`,
                 width: `${group.bgWidth}px`,
                 height: `${group.bgHeight}px`,
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundColor: 'rgba(0, 0, 0, 0.15)',
               }}
             />
             
