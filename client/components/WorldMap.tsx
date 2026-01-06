@@ -159,6 +159,7 @@ export default function WorldMap() {
               style={{
                 left: `${group.x + group.pinX}px`,
                 top: `${group.y + group.pinY}px`,
+                zIndex: 10,
               }}
             >
               <LocationPin country={group.country} />
