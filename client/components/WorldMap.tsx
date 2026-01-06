@@ -153,12 +153,12 @@ export default function WorldMap() {
               }}
             />
             
-            {/* Pin positioned within the background */}
+            {/* Pin positioned on top of background */}
             <div
               className="absolute"
               style={{
-                left: `${group.pinX}px`,
-                top: `${group.pinY}px`,
+                left: `${group.x + group.pinX}px`,
+                top: `${group.y + group.pinY}px`,
               }}
             >
               <LocationPin country={group.country} />
