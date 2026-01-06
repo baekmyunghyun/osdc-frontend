@@ -1,46 +1,341 @@
 import LocationPin from "./LocationPin";
 
 interface PinGroup {
-  x: number; // pin absolute x position
-  y: number; // pin absolute y position  
-  bgX: number; // background x position
-  bgY: number; // background y position
-  bgWidth: number; // background width
-  bgHeight: number; // background height
+  x: number;
+  y: number;
+  bgSvg: React.ReactNode;
   country: string;
 }
 
-// Pin groups with exact positions from Figma design
 const pinGroups: PinGroup[] = [
-  // Canada - Group at 286, 230
-  { x: 358, y: 251, bgX: 286, bgY: 251, bgWidth: 192, bgHeight: 89, country: "ca" },
-  
-  // US pins
-  { x: 246, y: 426, bgX: 207, bgY: 426, bgWidth: 128, bgHeight: 100, country: "us" },
-  { x: 308, y: 341, bgX: 186, bgY: 336, bgWidth: 247, bgHeight: 74, country: "us" },
-  { x: 254, y: 497, bgX: 180, bgY: 438, bgWidth: 238, bgHeight: 119, country: "us" },
-  { x: 426, y: 452, bgX: 387, bgY: 452, bgWidth: 128, bgHeight: 100, country: "us" },
-  
-  // Europe
-  { x: 688, y: 268, bgX: 600, bgY: 242, bgWidth: 247, bgHeight: 92, country: "ie" },
-  { x: 843, y: 264, bgX: 740, bgY: 238, bgWidth: 250, bgHeight: 93, country: "uk" },
-  { x: 957, y: 246, bgX: 875, bgY: 110, bgWidth: 250, bgHeight: 161, country: "se" },
-  { x: 939, y: 309, bgX: 842, bgY: 283, bgWidth: 221, bgHeight: 87, country: "de" },
-  { x: 790, y: 524, bgX: 751, bgY: 524, bgWidth: 124, bgHeight: 97, country: "fr" },
-  
-  // Asia
-  { x: 1151, y: 335, bgX: 1108, bgY: 335, bgWidth: 134, bgHeight: 114, country: "in" },
-  { x: 1267, y: 514, bgX: 1145, bgY: 449, bgWidth: 224, bgHeight: 102, country: "sg" },
-  { x: 1347, y: 369, bgX: 1262, bgY: 343, bgWidth: 195, bgHeight: 92, country: "hk" },
-  { x: 1500, y: 331, bgX: 1436, bgY: 305, bgWidth: 182, bgHeight: 78, country: "kr" },
-  { x: 1515, y: 499, bgX: 1459, bgY: 499, bgWidth: 179, bgHeight: 92, country: "jp" },
-  { x: 1653, y: 482, bgX: 1601, bgY: 470, bgWidth: 125, bgHeight: 119, country: "jp" },
-  
-  // South America
-  { x: 509, y: 730, bgX: 408, bgY: 703, bgWidth: 219, bgHeight: 81, country: "br" },
-  
+  // Canada
+  {
+    x: 358,
+    y: 251,
+    country: "ca",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '286px', top: '230px', width: '192px', height: '110px' }}
+        viewBox="0 0 192 110"
+        fill="none"
+      >
+        <rect y="21" width="192" height="89" rx="20" fill="black" fillOpacity="0.15" />
+      </svg>
+    ),
+  },
+  // US pin 1
+  {
+    x: 246,
+    y: 350,
+    country: "us",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '203px', top: '338px', width: '132px', height: '117px' }}
+        viewBox="0 0 132 117"
+        fill="none"
+      >
+        <rect y="12" width="132" height="105" rx="20" fill="black" fillOpacity="0.15" />
+      </svg>
+    ),
+  },
+  // US pin 2
+  {
+    x: 488,
+    y: 341,
+    country: "us",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '366px', top: '325px', width: '247px', height: '111px' }}
+        viewBox="0 0 247 111"
+        fill="none"
+      >
+        <rect y="37" width="247" height="74" rx="20" fill="black" fillOpacity="0.15" />
+      </svg>
+    ),
+  },
+  // US pin 3
+  {
+    x: 254,
+    y: 497,
+    country: "us",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '180px', top: '379px', width: '238px', height: '238px' }}
+        viewBox="0 0 238 238"
+        fill="none"
+      >
+        <path
+          d="M119.336 40.7259C119.336 45.9826 121.406 51.0279 125.097 54.7705L175.011 105.377C182.745 113.219 182.684 125.837 174.875 133.604L143.906 164.399C136.085 172.176 123.445 172.154 115.651 164.349L5.84755 54.3844C2.10315 50.6345 3.91174e-05 45.5518 4.97217e-05 40.2526L9.02467e-05 20.001C0.00011235 8.95542 8.95422 0.00119695 19.9998 0.00102718L99.3363 -0.000192241C110.382 -0.000362019 119.337 8.95418 119.337 20.0001L119.336 40.7259Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // US pin 4
+  {
+    x: 426,
+    y: 452,
+    country: "us",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '387px', top: '440px', width: '128px', height: '112px' }}
+        viewBox="0 0 128 112"
+        fill="none"
+      >
+        <rect y="12" width="128" height="100" rx="20" fill="black" fillOpacity="0.15" />
+      </svg>
+    ),
+  },
+  // Ireland
+  {
+    x: 688,
+    y: 268,
+    country: "ie",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '600px', top: '213px', width: '247px', height: '247px' }}
+        viewBox="0 0 247 247"
+        fill="none"
+      >
+        <path
+          d="M93.581 116.899C98.8548 116.876 103.906 114.771 107.635 111.041L184.535 34.1419C197.164 21.5126 188.165 -0.0786318 170.304 2.36569e-05L96.8521 0.323499C91.5784 0.346725 86.5272 2.45202 82.7981 6.18117L5.89859 83.0806C-6.73076 95.71 2.26841 117.301 20.1288 117.223L93.581 116.899Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // UK
+  {
+    x: 843,
+    y: 264,
+    country: "uk",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '740px', top: '212px', width: '250px', height: '250px' }}
+        viewBox="0 0 250 250"
+        fill="none"
+      >
+        <path
+          d="M94.7977 117.993C100.071 117.97 105.123 115.864 108.852 112.135L186.844 34.1423C199.474 21.513 190.475 -0.0782574 172.614 0.000397118L97.9456 0.329227C92.6718 0.352452 87.6206 2.45775 83.8915 6.1869L5.89876 84.1796C-6.73059 96.809 2.26855 118.4 20.129 118.322L94.7977 117.993Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // Sweden
+  {
+    x: 957,
+    y: 246,
+    country: "se",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '875px', top: '136px', width: '250px', height: '250px' }}
+        viewBox="0 0 250 250"
+        fill="none"
+      >
+        <path
+          d="M119.336 40.7259C119.336 45.9826 121.406 51.0279 125.097 54.7705L175.011 105.377C182.745 113.219 182.684 125.837 174.875 133.604L143.906 164.399C136.085 172.176 123.445 172.154 115.651 164.349L5.84755 54.3844C2.10315 50.6345 3.91174e-05 45.5518 4.97217e-05 40.2526L9.02467e-05 20.001C0.00011235 8.95542 8.95422 0.00119695 19.9998 0.00102718L99.3363 -0.000192241C110.382 -0.000362019 119.337 8.95418 119.337 20.0001L119.336 40.7259Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // Germany
+  {
+    x: 939,
+    y: 309,
+    country: "de",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '842px', top: '276px', width: '221px', height: '221px' }}
+        viewBox="0 0 221 221"
+        fill="none"
+      >
+        <path
+          d="M85.6089 98.8362C90.8782 98.8103 95.9245 96.706 99.6511 92.9804L158.503 34.1439C171.105 21.5453 162.182 -0.000140356 144.363 -0.000149462L78.5925 -0.00018307C73.2525 -0.000185799 68.1342 2.13532 64.3777 5.93067L5.82607 65.0883C-6.70654 77.7506 2.32337 99.2446 20.1389 99.1572L85.6089 98.8362Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // France
+  {
+    x: 790,
+    y: 524,
+    country: "fr",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '751px', top: '508px', width: '124px', height: '113px' }}
+        viewBox="0 0 124 113"
+        fill="none"
+      >
+        <rect y="16" width="124" height="97" rx="20" fill="black" fillOpacity="0.15" />
+      </svg>
+    ),
+  },
+  // India
+  {
+    x: 1151,
+    y: 335,
+    country: "in",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '1108px', top: '316px', width: '134px', height: '133px' }}
+        viewBox="0 0 134 133"
+        fill="none"
+      >
+        <rect y="19" width="134" height="114" rx="20" fill="black" fillOpacity="0.15" />
+      </svg>
+    ),
+  },
+  // Singapore
+  {
+    x: 1267,
+    y: 514,
+    country: "sg",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '1145px', top: '433px', width: '224px', height: '224px' }}
+        viewBox="0 0 224 224"
+        fill="none"
+      >
+        <path
+          d="M142.491 168.273C149.98 160.5 149.95 148.187 142.423 140.45L106.259 103.279C98.6193 95.4269 98.7188 82.8901 106.482 75.1601L147.646 34.1721C160.286 21.5852 151.372 -0.000242803 133.534 -0.000242024L46.2431 -0.000238208L20 -0.000237061C8.95432 -0.000236578 1.95283e-05 8.95407 2.00111e-05 19.9998L2.43805e-05 119.959C2.49935e-05 133.983 16.9233 141.04 26.8868 131.172C36.8502 121.304 53.7734 128.362 53.7735 142.385L53.7736 210.774C53.7737 228.772 75.6894 237.612 88.1768 224.65L142.491 168.273Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // Hong Kong
+  {
+    x: 1347,
+    y: 369,
+    country: "hk",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '1262px', top: '329px', width: '195px', height: '195px' }}
+        viewBox="0 0 195 195"
+        fill="none"
+      >
+        <path
+          d="M19.9292 0.216875C8.9112 0.255953 6.10965e-05 9.19878 8.89663e-05 20.2168L0.000244652 81.7656C0.000289842 99.6311 21.641 108.533 34.2116 95.8381L95.3739 34.0724C107.902 21.4207 98.8964 -0.0632039 81.0916 -5.4179e-05L19.9292 0.216875Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // South Korea
+  {
+    x: 1500,
+    y: 305,
+    country: "kr",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '1436px', top: '223px', width: '182px', height: '260px' }}
+        viewBox="0 0 154 231"
+        fill="none"
+      >
+        <path
+          d="M142.491 168.273C149.98 160.5 149.95 148.187 142.423 140.45L106.259 103.279C98.6193 95.4269 98.7188 82.8901 106.482 75.1601L147.646 34.1721C160.286 21.5852 151.372 -0.000242803 133.534 -0.000242024L46.2431 -0.000238208L20 -0.000237061C8.95432 -0.000236578 1.95283e-05 8.95407 2.00111e-05 19.9998L2.43805e-05 119.959C2.49935e-05 133.983 16.9233 141.04 26.8868 131.172C36.8502 121.304 53.7734 128.362 53.7735 142.385L53.7736 210.774C53.7737 228.772 75.6894 237.612 88.1768 224.65L142.491 168.273Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // Japan 1
+  {
+    x: 1515,
+    y: 486,
+    country: "jp",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '1459px', top: '407px', width: '179px', height: '179px' }}
+        viewBox="0 0 179 179"
+        fill="none"
+      >
+        <path
+          d="M19.9292 0.216875C8.9112 0.255953 6.10965e-05 9.19878 8.89663e-05 20.2168L0.000244652 81.7656C0.000289842 99.6311 21.641 108.533 34.2116 95.8381L95.3739 34.0724C107.902 21.4207 98.8964 -0.0632039 81.0916 -5.4179e-05L19.9292 0.216875Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
+  // Japan 2
+  {
+    x: 1653,
+    y: 482,
+    country: "jp",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '1601px', top: '396px', width: '125px', height: '209px' }}
+        viewBox="0 0 125 209"
+        fill="none"
+      >
+        <rect y="86" width="125" height="119" rx="20" fill="black" fillOpacity="0.15" />
+      </svg>
+    ),
+  },
+  // Brazil
+  {
+    x: 509,
+    y: 730,
+    country: "br",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '408px', top: '677px', width: '219px', height: '219px' }}
+        viewBox="0 0 219 219"
+        fill="none"
+      >
+        <path
+          d="M0.258574 103.756C0.281799 98.4819 2.38709 93.4308 6.11624 89.7016L89.9601 5.85781C97.7691 -1.95119 110.429 -1.9529 118.241 5.85399L147.461 35.0589C155.275 42.8688 155.277 55.5351 147.465 63.347L34.1421 176.669C21.5127 189.299 -0.07851 180.299 0.000143786 162.439L0.258574 103.756Z"
+          fill="black"
+          fillOpacity="0.15"
+        />
+      </svg>
+    ),
+  },
   // Australia
-  { x: 1541, y: 763, bgX: 1505, bgY: 763, bgWidth: 119, bgHeight: 93, country: "au" },
+  {
+    x: 1541,
+    y: 744,
+    country: "au",
+    bgSvg: (
+      <svg
+        className="absolute"
+        style={{ left: '1505px', top: '718px', width: '119px', height: '113px' }}
+        viewBox="0 0 119 113"
+        fill="none"
+      >
+        <rect y="19" width="119" height="93" rx="20" fill="black" fillOpacity="0.15" />
+      </svg>
+    ),
+  },
 ];
 
 export default function WorldMap() {
@@ -132,32 +427,27 @@ export default function WorldMap() {
           </svg>
         </div>
 
-        {/* Location pins with grouped semi-transparent backgrounds */}
+        {/* Individual marker backgrounds with unique SVG shapes */}
+        <div className="absolute inset-0">
+          {pinGroups.map((group, index) => (
+            <React.Fragment key={index}>
+              {group.bgSvg}
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* Location pins */}
         {pinGroups.map((group, groupIndex) => (
-          <div key={groupIndex}>
-            {/* Semi-transparent rounded background matching Figma design */}
-            <div
-              className="absolute rounded-[20px]"
-              style={{
-                left: `${group.bgX}px`,
-                top: `${group.bgY}px`,
-                width: `${group.bgWidth}px`,
-                height: `${group.bgHeight}px`,
-                backgroundColor: 'rgba(0, 0, 0, 0.15)',
-              }}
-            />
-            
-            {/* Pin positioned exactly as in Figma */}
-            <div
-              className="absolute"
-              style={{
-                left: `${group.x}px`,
-                top: `${group.y}px`,
-                zIndex: 10,
-              }}
-            >
-              <LocationPin country={group.country} />
-            </div>
+          <div
+            key={groupIndex}
+            className="absolute"
+            style={{
+              left: `${group.x}px`,
+              top: `${group.y}px`,
+              zIndex: 10,
+            }}
+          >
+            <LocationPin country={group.country} />
           </div>
         ))}
       </div>
