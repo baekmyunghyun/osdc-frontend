@@ -152,7 +152,7 @@ export default function WorldMap() {
           >
             {/* Semi-transparent rounded background */}
             <div
-              className="absolute inset-0 bg-black/15 rounded-[20px] -z-10"
+              className="absolute inset-0 bg-black/40 rounded-[20px] -z-10"
             />
             
             {/* Pin positioned within the background */}
