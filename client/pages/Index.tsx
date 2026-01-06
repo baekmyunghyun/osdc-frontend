@@ -69,7 +69,7 @@ export default function Index() {
       {/* Right Content Area */}
       <div className="flex-1 flex flex-col">
         {/* Top Charts Area */}
-        <div className="grid grid-cols-2 border-b border-black h-[310px]">
+        <div className="grid grid-cols-2 border-b border-black h-72">
           {/* Transaction Per Second Chart */}
           <div className="bg-white border-r border-black p-8 flex flex-col justify-center items-center gap-3">
             <h3 className="text-[28px] font-medium text-[#6C6E82] leading-7 whitespace-nowrap">
