@@ -7,224 +7,8 @@ interface NodeData {
   pieType: string;
 }
 
-// Component for rendering individual node with pie segment
+// Component for rendering individual node with solid gray circle
 const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
-  const renderPieSegment = (type: string) => {
-    const fillColor = "#989FAF";
-
-    const pieSegments: Record<string, JSX.Element> = {
-      "full-pie": (
-        <svg
-          width="60"
-          height="60"
-          viewBox="0 0 48 48"
-          fill="none"
-          style={{ position: "absolute", left: "-6px", top: "-6px" }}
-        >
-          <path
-            d="M54 24C54 40.5685 40.5685 54 24 54C7.43146 54 -6 40.5685 -6 24C-6 12.5335 0.433016 2.56956 9.88683 -2.47968L24 24V-6C40.5685 -6 54 7.43146 54 24Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      quarter: (
-        <svg
-          width="30"
-          height="30"
-          viewBox="0 0 24 24"
-          fill="none"
-          style={{ position: "absolute", right: "-6.155px", top: "-6.076px" }}
-        >
-          <path
-            d="M0 -6.07617C16.5685 -6.07617 30 7.35529 30 23.9238H0V-6.07617Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "half-pie": (
-        <svg
-          width="60"
-          height="60"
-          viewBox="0 0 48 48"
-          fill="none"
-          style={{ position: "absolute", left: "-6px", top: "-6px" }}
-        >
-          <path
-            d="M54 24C54 40.5685 40.5685 54 24 54C7.43146 54 -6 40.5685 -6 24H24V-6C40.5685 -6 54 7.43146 54 24Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "right-half": (
-        <svg
-          width="30"
-          height="60"
-          viewBox="0 0 24 48"
-          fill="none"
-          style={{ position: "absolute", right: "-6px", top: "-6px" }}
-        >
-          <path
-            d="M30 24C30 40.5685 16.5685 54 0 54V-6C16.5685 -6 30 7.43146 30 24Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "small-wedge": (
-        <svg
-          width="19.96"
-          height="30"
-          viewBox="0 0 20 25"
-          fill="none"
-          style={{ position: "absolute", right: "4.04px", top: "-5.973px" }}
-        >
-          <path
-            d="M0 -5.97266V24.0273L19.9605 1.63094C14.6576 -3.09844 7.66448 -5.97266 0 -5.97266Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "wedge-down": (
-        <svg
-          width="30"
-          height="55.927"
-          viewBox="0 0 24 48"
-          fill="none"
-          style={{ position: "absolute", right: "-6px", top: "-6.076px" }}
-        >
-          <path
-            d="M0 -6.07617C16.5685 -6.07617 30 7.35529 30 23.9238C30 34.9854 24.0133 44.6487 15.1033 49.8504L0 23.9238L0 -6.07617Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "wedge-down-2": (
-        <svg
-          width="23.945"
-          height="44.639"
-          viewBox="0 0 24 45"
-          fill="none"
-          style={{ position: "absolute", right: "0.352px", top: "0" }}
-        >
-          <path
-            d="M0 0C13.2245 0 23.945 10.7205 23.945 23.945C23.945 32.774 19.1666 40.4869 12.0549 44.6387L0 23.945V0Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "half-pie-simple": (
-        <svg
-          width="48"
-          height="48"
-          viewBox="0 0 48 48"
-          fill="none"
-          style={{ position: "absolute", left: "0", top: "0" }}
-        >
-          <path
-            d="M48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24H24V0C37.2548 0 48 10.7452 48 24Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "quarter-simple": (
-        <svg
-          width="23.924"
-          height="23.924"
-          viewBox="0 0 24 24"
-          fill="none"
-          style={{ position: "absolute", right: "-0.133px", top: "0" }}
-        >
-          <path
-            d="M0 0C13.2128 0 23.9238 10.7111 23.9238 23.9238H0V0Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "right-half-bottom": (
-        <svg
-          width="30"
-          height="60"
-          viewBox="0 0 24 48"
-          fill="none"
-          style={{ position: "absolute", right: "-6px", bottom: "-6.049px" }}
-        >
-          <path
-            d="M30 24.0488C30 40.6174 16.5685 54.0488 0 54.0488V-5.95117C16.5685 -5.95117 30 7.48029 30 24.0488Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "right-half-2": (
-        <svg
-          width="30"
-          height="60"
-          viewBox="0 0 24 48"
-          fill="none"
-          style={{ position: "absolute", right: "-6.277px", top: "-6px" }}
-        >
-          <path
-            d="M30 24C30 40.5685 16.5685 54 0 54V-6C16.5685 -6 30 7.43146 30 24Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "small-wedge-2": (
-        <svg
-          width="19.96"
-          height="30"
-          viewBox="0 0 20 24"
-          fill="none"
-          style={{ position: "absolute", right: "4.04px", top: "-6.077px" }}
-        >
-          <path
-            d="M0 -6.07715V23.9229L19.9605 1.52645C14.6576 -3.20293 7.66448 -6.07715 0 -6.07715Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "right-half-3": (
-        <svg
-          width="30"
-          height="60"
-          viewBox="0 0 24 48"
-          fill="none"
-          style={{ position: "absolute", right: "-6px", bottom: "-6.002px" }}
-        >
-          <path
-            d="M30 24.002C30 40.5705 16.5685 54.002 0 54.002L0 -5.99805C16.5685 -5.99805 30 7.43341 30 24.002Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-      "quarter-2": (
-        <svg
-          width="30"
-          height="30"
-          viewBox="0 0 24 24"
-          fill="none"
-          style={{ position: "absolute", right: "-6px", top: "-6px" }}
-        >
-          <path d="M0 -6C16.5685 -6 30 7.43146 30 24H0V-6Z" fill={fillColor} />
-        </svg>
-      ),
-      "small-wedge-3": (
-        <svg
-          width="19.96"
-          height="30"
-          viewBox="0 0 20 24"
-          fill="none"
-          style={{ position: "absolute", right: "4.04px", top: "-6px" }}
-        >
-          <path
-            d="M0 -6V24L19.9605 1.6036C14.6576 -3.12578 7.66448 -6 0 -6Z"
-            fill={fillColor}
-          />
-        </svg>
-      ),
-    };
-
-    return pieSegments[type] || null;
-  };
-
   return (
     <div
       style={{
@@ -233,7 +17,6 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
         top: `${node.y}px`,
         width: "48px",
         height: "48px",
-        overflow: "hidden",
       }}
     >
       <div
@@ -244,17 +27,13 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          gap: "10px",
           borderRadius: "1000px",
-          backgroundColor: "#000",
+          backgroundColor: "#989FAF",
           position: "relative",
-          overflow: "hidden",
         }}
       >
-        {renderPieSegment(node.pieType)}
         <div
           style={{
-            alignSelf: "stretch",
             color: "#FFF",
             textAlign: "center",
             fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
