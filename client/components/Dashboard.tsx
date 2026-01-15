@@ -62,10 +62,14 @@ const Dashboard: React.FC<DashboardProps> = ({
           value={metrics.avgSingleShardTPS}
         />
         <MetricItem
+          label="Average Single Shard Transaction Latency"
+          value={metrics.avgLatency}
+        />
+        <MetricItem
           label="Average Cross Shard Transaction Latency"
           value={metrics.avgLatency}
         />
-        <MetricItem label="Total Transactions" value={metrics.totalTx} />
+        <MetricItem label="Total Transactions" value={metrics.totalTx} hasBorderBottom />
         <MetricItem
           label="Leader Change Time"
           value={metrics.leaderChangeTime}
@@ -73,6 +77,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         <MetricItem
           label="Committee Change Time"
           value={metrics.committeeChangeTime}
+          hasBorderBottom
         />
 
         <div className="log-container" ref={logContainerRef}>
@@ -411,11 +416,13 @@ const Dashboard: React.FC<DashboardProps> = ({
 const MetricItem = ({
   label,
   value,
+  hasBorderBottom = false,
 }: {
   label: string;
   value: string | number;
+  hasBorderBottom?: boolean;
 }) => (
-  <div className="metric-item">
+  <div className={`metric-item ${hasBorderBottom ? 'has-border-bottom' : ''}`}>
     <div className="metric-label">{label}</div>
     <div className="metric-value">{value}</div>
   </div>
