@@ -40,14 +40,17 @@ const Dashboard: React.FC<DashboardProps> = ({
   const getButtonStyle = (tabIndex: number) => {
     const isActive = activeTab === tabIndex;
     return {
+      height: "60px",
       padding: "20px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
       backgroundColor: "#FFF",
       borderRadius: "8px",
       border: isActive ? "1.25px solid #6C6E82" : "1.25px solid #9E9E9E",
       color: isActive ? "#000" : "#9E9E9E",
       fontWeight: "700",
       fontSize: "20px",
-      lineHeight: "20px",
       cursor: "pointer",
       transition: "all 0.2s",
     } as React.CSSProperties;
@@ -139,27 +142,30 @@ const Dashboard: React.FC<DashboardProps> = ({
             <div
               style={{
                 position: "absolute",
-                top: "24px",
-                right: "24px",
+                top: "0px",
+                right: "0px",
                 zIndex: 10,
-                padding: "24px",
+                width: "196px",
+                height: "120px",
+                padding: "15px",
                 backgroundColor: "#E9E9EA",
-                border: "2px solid #000",
+                border: "1px solid #000",
                 display: "flex",
                 flexDirection: "column",
-                gap: "28px",
+                gap: "20px",
+                boxSizing: "border-box",
               }}
             >
               {/* Shard Area */}
-              <div style={{ display: "flex", gap: "48px" }}>
+              <div style={{ display: "flex", gap: "8px" }}>
                 {/* Shard Item */}
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <div
                     style={{
-                      width: "32px",
-                      height: "32px",
+                      width: "20px",
+                      height: "20px",
                       borderRadius: "1000px",
                       backgroundColor: "#000",
                     }}
@@ -169,39 +175,12 @@ const Dashboard: React.FC<DashboardProps> = ({
                       color: "#000",
                       fontFamily:
                         "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "24px",
+                      fontSize: "20px",
                       fontWeight: "600",
-                      lineHeight: "24px",
+                      lineHeight: "20px",
                     }}
                   >
                     shard
-                  </div>
-                </div>
-
-                {/* Backup Item */}
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
-                >
-                  <div
-                    style={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "1000px",
-                      backgroundColor: "#FFF",
-                      border: "2px solid #000",
-                    }}
-                  ></div>
-                  <div
-                    style={{
-                      color: "#000",
-                      fontFamily:
-                        "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "24px",
-                      fontWeight: "600",
-                      lineHeight: "24px",
-                    }}
-                  >
-                    backup
                   </div>
                 </div>
               </div>
@@ -211,19 +190,18 @@ const Dashboard: React.FC<DashboardProps> = ({
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "12px",
+                  gap: "8px",
                 }}
               >
                 {/* Vote Message */}
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <svg
-                    width="12"
-                    height="12"
+                    width="8"
+                    height="8"
                     viewBox="0 0 8 8"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <circle cx="4" cy="4" r="4" fill="#FF00FF" />
                   </svg>
@@ -232,9 +210,9 @@ const Dashboard: React.FC<DashboardProps> = ({
                       color: "#000",
                       fontFamily:
                         "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "24px",
+                      fontSize: "20px",
                       fontWeight: "600",
-                      lineHeight: "24px",
+                      lineHeight: "20px",
                     }}
                   >
                     vote message
@@ -243,14 +221,13 @@ const Dashboard: React.FC<DashboardProps> = ({
 
                 {/* Shard Message */}
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <svg
-                    width="12"
-                    height="12"
+                    width="8"
+                    height="8"
                     viewBox="0 0 8 8"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <circle cx="4" cy="4" r="4" fill="#0000FF" />
                   </svg>
@@ -259,39 +236,12 @@ const Dashboard: React.FC<DashboardProps> = ({
                       color: "#000",
                       fontFamily:
                         "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "24px",
+                      fontSize: "20px",
                       fontWeight: "600",
-                      lineHeight: "24px",
+                      lineHeight: "20px",
                     }}
                   >
                     shard message
-                  </div>
-                </div>
-
-                {/* Committee Change Message */}
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 8 8"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="4" cy="4" r="4" fill="#FF8800" />
-                  </svg>
-                  <div
-                    style={{
-                      color: "#000",
-                      fontFamily:
-                        "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "24px",
-                      fontWeight: "600",
-                      lineHeight: "24px",
-                    }}
-                  >
-                    committee change message
                   </div>
                 </div>
               </div>
@@ -303,27 +253,30 @@ const Dashboard: React.FC<DashboardProps> = ({
             <div
               style={{
                 position: "absolute",
-                top: "24px",
-                right: "24px",
+                top: "0px",
+                right: "0px",
                 zIndex: 10,
-                padding: "24px",
+                width: "281px",
+                height: "148px",
+                padding: "15px",
                 backgroundColor: "#E9E9EA",
-                border: "2px solid #000",
+                border: "1px solid #000",
                 display: "flex",
                 flexDirection: "column",
-                gap: "28px",
+                gap: "20px",
+                boxSizing: "border-box",
               }}
             >
               {/* Shard Area */}
-              <div style={{ display: "flex", gap: "48px" }}>
+              <div style={{ display: "flex", gap: "36px" }}>
                 {/* Shard Item */}
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <div
                     style={{
-                      width: "32px",
-                      height: "32px",
+                      width: "20px",
+                      height: "20px",
                       borderRadius: "1000px",
                       backgroundColor: "#000",
                     }}
@@ -333,26 +286,26 @@ const Dashboard: React.FC<DashboardProps> = ({
                       color: "#000",
                       fontFamily:
                         "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "24px",
+                      fontSize: "20px",
                       fontWeight: "600",
-                      lineHeight: "24px",
+                      lineHeight: "20px",
                     }}
                   >
                     shard
                   </div>
                 </div>
-
-                {/* Backup Item */}
+                
+              {/* Backup Item */}
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <div
                     style={{
-                      width: "32px",
-                      height: "32px",
+                      width: "20px",
+                      height: "20px",
                       borderRadius: "1000px",
                       backgroundColor: "#FFF",
-                      border: "2px solid #000",
+                      border: "1px solid #000",
                     }}
                   ></div>
                   <div
@@ -360,34 +313,60 @@ const Dashboard: React.FC<DashboardProps> = ({
                       color: "#000",
                       fontFamily:
                         "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "24px",
+                      fontSize: "20px",
                       fontWeight: "600",
-                      lineHeight: "24px",
+                      lineHeight: "20px",
                     }}
                   >
                     backup
                   </div>
                 </div>
               </div>
-
+                            
               {/* Message Area - Only Committee Change */}
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "12px",
+                  gap: "8px",
                 }}
               >
-                {/* Committee Change Message */}
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
+
+              {/*leader change message*/}
+              <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <svg
-                    width="12"
-                    height="12"
+                    width="8"
+                    height="8"
                     viewBox="0 0 8 8"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="4" cy="4" r="4" fill="#0000FF" />
+                  </svg>
+                  <div
+                    style={{
+                      color: "#000",
+                      fontFamily:
+                        "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+                      fontSize: "17px",
+                      fontWeight: "600",
+                      lineHeight: "20px",
+                    }}
+                  >
+                    leader change message
+                  </div>
+                </div>
+
+                {/* Committee Change Message */}
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <svg
+                    width="8"
+                    height="8"
+                    viewBox="0 0 8 8"
+                    fill="none"
                   >
                     <circle cx="4" cy="4" r="4" fill="#FF8800" />
                   </svg>
@@ -396,14 +375,41 @@ const Dashboard: React.FC<DashboardProps> = ({
                       color: "#000",
                       fontFamily:
                         "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "24px",
+                      fontSize: "17px",
                       fontWeight: "600",
-                      lineHeight: "24px",
+                      lineHeight: "20px",
                     }}
                   >
                     committee change message
                   </div>
                 </div>
+
+                {/* Vote Message */}
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <svg
+                    width="8"
+                    height="8"
+                    viewBox="0 0 8 8"
+                    fill="none"
+                  >
+                    <circle cx="4" cy="4" r="4" fill="#FF00FF" />
+                  </svg>
+                  <div
+                    style={{
+                      color: "#000",
+                      fontFamily:
+                        "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+                      fontSize: "17px",
+                      fontWeight: "600",
+                      lineHeight: "20px",
+                    }}
+                  >
+                    vote message
+                  </div>
+                </div>
+
               </div>
             </div>
           )}
