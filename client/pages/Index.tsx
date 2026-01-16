@@ -6,16 +6,13 @@ import CoordinationShardView from "@/components/CoordinationShardView";
 import { useState, useEffect } from "react";
 
 interface LogEntry {
-  second: number;
-  timestamp: string;
+  second_offset: number;
   tps: number;
   avgSingleShardTPS: number;
-  cumulativeTx: number;
-  events: number;
-  activeShards: number;
-  avgLocalLatency: number;
-  avgCrossLatency: number | null;
-  transactionConfirmationTime: number;
+  avg_latency_seconds_local: number;
+  avg_latency_seconds_cross: number | null;
+  transaction_confirmation_time: number;
+  cumulative_tx: number;
 }
 
 export default function Index() {
@@ -50,9 +47,19 @@ export default function Index() {
         }
         return res.json();
       })
-      .then((data: LogEntry[]) => {
+      .then((data: any[]) => {
         if (Array.isArray(data)) {
-          setTimeSeriesData(data);
+          // Map old field names to new ones if needed
+          const mapped = data.map((d) => ({
+            second_offset: d.second_offset,
+            tps: d.tps,
+            avgSingleShardTPS: d.avgSingleShardTPS,
+            avg_latency_seconds_local: d.avg_latency_seconds_local,
+            avg_latency_seconds_cross: d.avg_latency_seconds_cross,
+            transaction_confirmation_time: d.transaction_confirmation_time,
+            cumulative_tx: d.cumulative_tx,
+          }));
+          setTimeSeriesData(mapped);
         }
       })
       .catch((err) => console.error("Failed to load logs:", err));
@@ -86,7 +93,7 @@ export default function Index() {
       .catch((err) => console.error(err));
   }, []);
 
-  useEffect(() => {
+    useEffect(() => {
     if (timeSeriesData.length === 0 || rawLogs.length === 0) return;
 
     // Configuration
@@ -95,86 +102,75 @@ export default function Index() {
     const LOG_UPDATE_INTERVAL = 100; // Check for logs every 100ms
     
     // State for simulation
-    let currentLogSimTime = new Date(timeSeriesData[0].timestamp).getTime();
     let currentChartIndex = 0;
     
     // 1. Chart/Metrics Interval (Runs every 1 second)
     const chartInterval = setInterval(() => {
-        if (currentChartIndex >= timeSeriesData.length) {
-            currentChartIndex = 0; // Loop charts
-             // Sync log time when charts loop, or keep them independent? 
-             // Usually better to restart logs too if everything loops
-            currentLogSimTime = new Date(timeSeriesData[0].timestamp).getTime();
-        }
+      if (currentChartIndex >= timeSeriesData.length) {
+        currentChartIndex = 0; // Loop charts
+      }
 
-        const currentData = timeSeriesData[currentChartIndex];
-        const timeStr = currentData.second.toString();
+      const currentData = timeSeriesData[currentChartIndex];
+      const timeStr = currentData.second_offset.toString();
 
-        const randomLeaderTime = "00.00";
-        const randomCommitteeTime = "00.00";
+      const randomLeaderTime = "00.00";
+      const randomCommitteeTime = "00.00";
 
-        setMetrics({
-          totalTPS: currentData.tps,
-          avgSingleShardTPS: currentData.avgSingleShardTPS,
-          avgSingleShardLatency: currentData.avgLocalLatency,
-          avgCrossShardLatency: currentData.avgCrossLatency ?? 0,
-          totalTransactions: currentData.cumulativeTx,
-          leaderChangeTime: randomLeaderTime,
-          committeeChangeTime: randomCommitteeTime,
-          blockHeight: currentData.second,
-        });
+      setMetrics({
+        totalTPS: currentData.tps,
+        avgSingleShardTPS: currentData.avgSingleShardTPS,
+        avgSingleShardLatency: currentData.avg_latency_seconds_local,
+        avgCrossShardLatency: currentData.avg_latency_seconds_cross ?? 0,
+        totalTransactions: currentData.cumulative_tx,
+        leaderChangeTime: randomLeaderTime,
+        committeeChangeTime: randomCommitteeTime,
+        blockHeight: currentData.second_offset,
+      });
 
-        setTpsData((prev) => {
-            const newData = [...prev, { time: timeStr, value: currentData.tps }];
-            return newData.slice(-50);
-        });
+      setTpsData((prev) => {
+        const newData = [...prev, { time: timeStr, value: currentData.tps }];
+        return newData.slice(-50);
+      });
 
-        setLatencyData((prev) => {
-            const newData = [
-                ...prev,
-                { time: timeStr, value: currentData.transactionConfirmationTime },
-            ];
-            return newData.slice(-50);
-        });
+      setLatencyData((prev) => {
+        const newData = [
+          ...prev,
+          { time: timeStr, value: currentData.transaction_confirmation_time },
+        ];
+        return newData.slice(-50);
+      });
 
-        currentChartIndex++;
+      currentChartIndex++;
     }, CHART_UPDATE_INTERVAL);
 
     // 2. Log Interval (Runs fast)
+    // No timestamp in new metric, so just loop logs as before
+    let currentLogSimTime = 0;
     const logInterval = setInterval(() => {
-        const endTime = new Date(timeSeriesData[timeSeriesData.length - 1].timestamp).getTime();
+      // Advance log time
+      const timeIncrement = LOG_UPDATE_INTERVAL * LOG_SPEED_MULTIPLIER;
+
+      const logsInWindow = rawLogs.slice(currentLogSimTime, currentLogSimTime + timeIncrement);
+
+      if (logsInWindow.length > 0) {
+        setLogs((prev) => {
+        const newEntries = logsInWindow.map((l) => l.text);
+        return [...prev, ...newEntries].slice(-20);
+        });
+      }
         
-        if (currentLogSimTime >= endTime) {
-             // If logs finish before charts, loop them or wait?
-             // Let's loop them for continuous activity
-            currentLogSimTime = new Date(timeSeriesData[0].timestamp).getTime();
-        }
-
-        // Advance log time
-        const timeIncrement = LOG_UPDATE_INTERVAL * LOG_SPEED_MULTIPLIER;
-
-        const logsInWindow = rawLogs.filter(
-        (l) =>
-          l.timestamp >= currentLogSimTime &&
-          l.timestamp < currentLogSimTime + timeIncrement,
-        );
-
-        if (logsInWindow.length > 0) {
-            setLogs((prev) => {
-            const newEntries = logsInWindow.map((l) => l.text);
-            return [...prev, ...newEntries].slice(-20);
-            });
-        }
-        
-        currentLogSimTime += timeIncrement;
+      currentLogSimTime += timeIncrement;
+      if (currentLogSimTime >= rawLogs.length) {
+        currentLogSimTime = 0;
+      }
 
     }, LOG_UPDATE_INTERVAL);
 
     return () => {
-        clearInterval(chartInterval);
-        clearInterval(logInterval);
+      clearInterval(chartInterval);
+      clearInterval(logInterval);
     };
-  }, [timeSeriesData, rawLogs]);
+    }, [timeSeriesData, rawLogs]);
 
   return (
     <Dashboard
