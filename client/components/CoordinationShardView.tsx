@@ -145,38 +145,40 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
 const CoordinationShardView: React.FC = () => {
   const nodes: NodeData[] = React.useMemo(() => {
     const rawNodes = [
-      { id: 1, x: 529, y: 136, pieType: "full-pie" },
-      { id: 2, x: 663, y: 191, pieType: "quarter" },
-      { id: 3, x: 717, y: 324, pieType: "full-pie" },
-      { id: 4, x: 663, y: 457, pieType: "half-pie" },
-      { id: 5, x: 529, y: 509, pieType: "right-half" },
-      { id: 6, x: 395, y: 457, pieType: "full-pie" },
-      { id: 7, x: 341, y: 323, pieType: "right-half" },
-      { id: 8, x: 395, y: 190, pieType: "half-pie" },
-      { id: 9, x: 607, y: 32, pieType: "small-wedge" },
-      { id: 10, x: 791, y: 172, pieType: "half-pie" },
-      { id: 11, x: 823, y: 403, pieType: "right-half" },
-      { id: 12, x: 681, y: 584, pieType: "full-pie" },
-      { id: 13, x: 451, y: 615, pieType: "wedge-down" },
-      { id: 14, x: 268, y: 474, pieType: "right-half" },
-      { id: 15, x: 237, y: 245, pieType: "small-wedge" },
-      { id: 16, x: 377, y: 62, pieType: "half-pie" },
-      { id: 17, x: 824, y: 30, pieType: "right-half" },
-      { id: 18, x: 931, y: 217, pieType: "full-pie" },
-      { id: 19, x: 931, y: 431, pieType: "quarter" },
-      { id: 20, x: 823, y: 618, pieType: "quarter" },
-      { id: 21, x: 235, y: 618, pieType: "full-pie" },
-      { id: 22, x: 127, y: 431, pieType: "wedge-down" },
-      { id: 23, x: 126, y: 216, pieType: "small-wedge" },
-      { id: 24, x: 189, y: 67, pieType: "wedge-down" },
-      { id: 25, x: 955, y: 0, pieType: "half-pie" },
-      { id: 26, x: 1045, y: 184, pieType: "right-half" },
-      { id: 27, x: 1058, y: 393, pieType: "half-pie" },
-      { id: 28, x: 991, y: 590, pieType: "wedge-down" },
-      { id: 29, x: 115, y: 639, pieType: "wedge-down" },
-      { id: 30, x: 13, y: 462, pieType: "small-wedge" },
-      { id: 31, x: 0, y: 255, pieType: "quarter" },
-      { id: 32, x: 67, y: 58, pieType: "full-pie" },
+      { id: 1, x: 759, y: 164, pieType: "full-pie" },
+      { id: 2, x: 913, y: 190, pieType: "quarter" },
+      { id: 3, x: 967, y: 352.5, pieType: "full-pie" },
+      { id: 4, x: 913, y: 516, pieType: "half-pie" },
+      { id: 5, x: 759, y: 538, pieType: "right-half" },
+      { id: 6, x: 605, y: 516, pieType: "full-pie" },
+      { id: 7, x: 511, y: 352.17, pieType: "right-half" },
+      { id: 8, x: 605, y: 189, pieType: "half-pie" },
+      { id: 9, x: 837, y: 60, pieType: "small-wedge" },
+      { id: 10, x: 1103, y: 274, pieType: "half-pie" },
+      { id: 11, x: 1103, y: 432, pieType: "right-half" },
+      { id: 12, x: 837, y: 644, pieType: "full-pie" },
+      { id: 13, x: 681, y: 644, pieType: "wedge-down" },
+      { id: 14, x: 417, y: 434, pieType: "right-half" },
+      { id: 15, x: 417, y: 274, pieType: "small-wedge" },
+      { id: 16, x: 681, y: 60, pieType: "half-pie" },
+      { id: 17, x: 1104, y: 129, pieType: "right-half" },
+      { id: 18, x: 1261, y: 196, pieType: "full-pie" },     
+      { id: 19, x: 1261, y: 510, pieType: "quarter" },
+      { id: 20, x: 1103, y: 577, pieType: "quarter" },
+      { id: 21, x: 415, y: 577, pieType: "full-pie" },
+      { id: 22, x: 257, y: 510, pieType: "wedge-down" },
+
+      { id: 23, x: 256, y: 195, pieType: "small-wedge" },
+      { id: 24, x: 415, y: 128, pieType: "wedge-down" },
+      { id: 25, x: 1388, y: 93, pieType: "half-pie" },
+
+      { id: 26, x: 1448, y: 274, pieType: "right-half" },
+      { id: 27, x: 1448, y: 432, pieType: "half-pie" },
+      { id: 28, x: 1338, y: 611, pieType: "wedge-down" },
+      { id: 29, x: 130, y: 611, pieType: "wedge-down" },
+      { id: 30, x: 70, y: 434, pieType: "small-wedge" },
+      { id: 31, x: 70, y: 274, pieType: "quarter" },
+      { id: 32, x: 130, y: 93, pieType: "full-pie" },
     ];
 
     return rawNodes.map((node) => ({
@@ -203,34 +205,26 @@ const CoordinationShardView: React.FC = () => {
       <div
         style={{
           position: "relative",
-          width: "1106px",
-          height: "687px",
+          width: "1565px",
+          height: "734px",
         }}
       >
         {/* Connection Lines Layer */}
         <svg
           style={{
             position: "absolute",
-            left: "-319px",
-            top: "-748px",
-            width: "2205px",
-            height: "2205px",
+            width: "1565px",
+            height: "734px",
           }}
-          viewBox="0 0 2205 2205"
           fill="none"
         >
           <path
-            d="M1506.07 1018.16L1528.35 803.953"
+            d="M749.5 443.5L903.5 418L1058.5 444.5L1112 606L1058 770L904 792.5L750 770L695.5 607L749.5 443.5Z"
             stroke="black"
             strokeOpacity="0.25"
           />
           <path
-            d="M699.671 1020L639.81 860.372"
-            stroke="black"
-            strokeOpacity="0.25"
-          />
-          <path
-            d="M966.344 989L951.172 865.936"
+            d="M982 314L825.5 313.5L560 382L562 528V686.5L560 831L826 898H982L1248 831V686.5V528L1249 383.5L982 314Z"
             stroke="black"
             strokeOpacity="0.25"
           />
@@ -246,23 +240,20 @@ const CoordinationShardView: React.FC = () => {
         <svg
           style={{
             position: "absolute",
-            left: "467px",
-            top: "213px",
-            width: "206px",
-            height: "222px",
+            left: "696px",
+            top: "258px",
+            width: "205px",
+            height: "210px",
           }}
-          width="206"
-          height="222"
-          viewBox="0 0 206 222"
           fill="none"
         >
           <path
-            d="M193.834 155.238C185.197 171.747 172.147 185.971 155.904 196.58L87.6953 108.294L87.6953 -7.62939e-05C107.619 -7.71081e-05 127.218 4.64714 144.656 13.5067C162.095 22.3663 176.805 35.1488 187.409 50.658C198.013 66.1672 204.164 83.8962 205.288 102.186C206.412 120.476 202.471 138.73 193.834 155.238Z"
+            d="M193.834 166.054C185.197 183.713 172.147 198.928 155.904 210.276L87.6953 115.839L87.6953 4.57764e-05C107.619 4.49055e-05 127.218 4.97104 144.656 14.4479C162.095 23.9248 176.805 37.5978 187.409 54.1875C198.013 70.7773 204.164 89.7416 205.288 109.306C206.412 128.87 202.471 148.395 193.834 166.054Z"
             fill="white"
           />
           <circle
             cx="87.3501"
-            cy="134.296"
+            cy="117.113"
             r="86.8501"
             fill="white"
             stroke="#16171A"
@@ -276,10 +267,10 @@ const CoordinationShardView: React.FC = () => {
             fontWeight="bold"
             letterSpacing="-0.02em"
           >
-            <tspan x="14.1458" y="134.357">
+            <tspan x="14.1448" y="117.174">
               Coordination{" "}
             </tspan>
-            <tspan x="54.1086" y="162.357">
+            <tspan x="54.1077" y="145.174">
               Shard
             </tspan>
           </text>
@@ -287,7 +278,7 @@ const CoordinationShardView: React.FC = () => {
 
         {/* Snapshot 1 (Pink/Magenta) */}
         <svg
-          style={{ position: "absolute", left: "611px", top: "120px" }}
+          style={{ position: "absolute", left: "771px", top: "89px" }}
           width="20"
           height="20"
           viewBox="0 0 20 20"
@@ -298,7 +289,7 @@ const CoordinationShardView: React.FC = () => {
 
         {/* Snapshot 2 (Blue) */}
         <svg
-          style={{ position: "absolute", left: "443px", top: "436px" }}
+          style={{ position: "absolute", left: "603px", top: "405px" }}
           width="20"
           height="20"
           viewBox="0 0 20 20"
@@ -312,14 +303,16 @@ const CoordinationShardView: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          top: "20px",
-          right: "20px",
-          padding: "15px 20px",
-          backgroundColor: "#FFF",
+          top: "0px",
+          right: "0px",
+          padding: "16px",
+          backgroundColor: "#E9E9EA",
           border: "1px solid #000",
           display: "flex",
           flexDirection: "column",
-          gap: "10px",
+          gap: "12px",
+          width: "293px",
+          height: "84px",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -330,9 +323,9 @@ const CoordinationShardView: React.FC = () => {
             style={{
               color: "#000",
               fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-              fontSize: "14px",
+              fontSize: "20px",
               fontWeight: "600",
-              lineHeight: "16px",
+              lineHeight: "20px",
               whiteSpace: "nowrap",
             }}
           >
@@ -347,9 +340,9 @@ const CoordinationShardView: React.FC = () => {
             style={{
               color: "#000",
               fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-              fontSize: "14px",
+              fontSize: "20px",
               fontWeight: "600",
-              lineHeight: "16px",
+              lineHeight: "20px",
               whiteSpace: "nowrap",
             }}
           >
