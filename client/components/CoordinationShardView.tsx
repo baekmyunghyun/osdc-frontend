@@ -5,23 +5,56 @@ interface NodeData {
   x: number;
   y: number;
   pieType: string;
-  duration?: string; // Optional animation duration (e.g., "2s")
-  delay?: string;    // Optional animation delay (e.g., "0.5s")
+  duration?: string;
+  delay?: string;
 }
 
-// Component for rendering individual node with pie segment
 const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
   const renderPieSegment = (type: string) => {
     const fillColor = "#989FAF";
 
-    // Restore the structure if you want different shapes later, 
-    // but for now returning the circle as requested.
-    // You can expand this logic again if needed.
+    // Different pie types from Figma
+    const pieTypes: Record<string, JSX.Element> = {
+      "full-pie": (
+        <path
+          d="M60 30C60 46.5685 46.5685 60 30 60C13.4315 60 0 46.5685 0 30C0 18.5335 6.43302 8.56956 15.8868 3.52032L30 30V0C46.5685 0 60 13.4315 60 30Z"
+          fill={fillColor}
+        />
+      ),
+      quarter: (
+        <path d="M0 0C16.5685 0 30 13.4315 30 30H0V0Z" fill={fillColor} />
+      ),
+      "half-pie": (
+        <path
+          d="M60 30C60 46.5685 46.5685 60 30 60C13.4315 60 0 46.5685 0 30H30V0C46.5685 0 60 13.4315 60 30Z"
+          fill={fillColor}
+        />
+      ),
+      "right-half": (
+        <path
+          d="M30 30C30 46.5685 16.5685 60 0 60V0C16.5685 0 30 13.4315 30 30Z"
+          fill={fillColor}
+        />
+      ),
+      "small-wedge": (
+        <path
+          d="M0 0V30L19.9605 7.6036C14.6576 2.87422 7.66448 0 0 0Z"
+          fill={fillColor}
+        />
+      ),
+      "wedge-down": (
+        <path
+          d="M0 0C16.5685 0 30 13.4315 30 30C30 41.0616 24.0133 50.7249 15.1033 55.9265L0 30V0Z"
+          fill={fillColor}
+        />
+      ),
+    };
+
     return (
       <svg
         width="60"
         height="60"
-        viewBox="0 0 48 48"
+        viewBox="0 0 60 60"
         fill="none"
         style={{
           position: "absolute",
@@ -30,7 +63,7 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
           overflow: "visible",
         }}
       >
-        <circle cx="24" cy="24" r="30" fill={fillColor} />
+        {pieTypes[type] || pieTypes["full-pie"]}
       </svg>
     );
   };
@@ -71,8 +104,8 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
             top: "50%",
             transform: "translate(-50%, -50%)",
             pointerEvents: "none",
-            animationDuration: node.duration || "2s", // Use node-specific duration or default
-            animationDelay: node.delay || "0s",       // Use node-specific delay or default
+            animationDuration: node.duration || "2s",
+            animationDelay: node.delay || "0s",
           }}
         >
           <div
@@ -110,78 +143,48 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
 };
 
 const CoordinationShardView: React.FC = () => {
-  // Use useMemo to ensure random values stay consistent across re-renders
   const nodes: NodeData[] = React.useMemo(() => {
     const rawNodes = [
-      { id: 1, x: 529, y: 105, pieType: "full-pie" },
-      { id: 2, x: 663, y: 130, pieType: "quarter" },
-      { id: 3, x: 717, y: 293, pieType: "full-pie" },
-      { id: 4, x: 663, y: 456, pieType: "half-pie" },
-      { id: 5, x: 529, y: 478, pieType: "right-half" },
-      { id: 6, x: 395, y: 456, pieType: "full-pie" },
-      { id: 7, x: 341, y: 292, pieType: "right-half" },
-      { id: 8, x: 395, y: 129, pieType: "half-pie" },
-      { id: 9, x: 607, y: 0, pieType: "small-wedge" },
-      { id: 10, x: 823, y: 214, pieType: "half-pie" },
-      { id: 11, x: 823, y: 372, pieType: "right-half-bottom" },
-      { id: 12, x: 607, y: 584, pieType: "full-pie" },
-      { id: 13, x: 451, y: 584, pieType: "wedge-down" },
-      { id: 14, x: 237, y: 374, pieType: "right-half-bottom" },
-      { id: 15, x: 237, y: 214, pieType: "small-wedge-2" },
-      { id: 16, x: 451, y: 0, pieType: "half-pie-simple" },
-      { id: 17, x: 824, y: 69, pieType: "right-half-2" },
-      { id: 18, x: 931, y: 136, pieType: "full-pie" },
-      { id: 19, x: 931, y: 450, pieType: "quarter" },
-      { id: 20, x: 823, y: 517, pieType: "quarter-simple" },
-      { id: 21, x: 235, y: 517, pieType: "full-pie" },
-      { id: 22, x: 127, y: 450, pieType: "wedge-down-2" },
-      { id: 23, x: 126, y: 135, pieType: "small-wedge" },
-      { id: 24, x: 235, y: 68, pieType: "wedge-down" },
-      { id: 25, x: 1058, y: 33, pieType: "half-pie" },
-      { id: 26, x: 1058, y: 214, pieType: "right-half-3" },
-      { id: 27, x: 1058, y: 372, pieType: "half-pie" },
-      { id: 28, x: 1058, y: 551, pieType: "wedge-down" },
-      { id: 29, x: 0, y: 551, pieType: "wedge-down" },
-      { id: 30, x: 0, y: 374, pieType: "small-wedge-3" },
-      { id: 31, x: 0, y: 214, pieType: "quarter-2" },
-      { id: 32, x: 0, y: 33, pieType: "full-pie" },
+      { id: 1, x: 529, y: 136, pieType: "full-pie" },
+      { id: 2, x: 663, y: 191, pieType: "quarter" },
+      { id: 3, x: 717, y: 324, pieType: "full-pie" },
+      { id: 4, x: 663, y: 457, pieType: "half-pie" },
+      { id: 5, x: 529, y: 509, pieType: "right-half" },
+      { id: 6, x: 395, y: 457, pieType: "full-pie" },
+      { id: 7, x: 341, y: 323, pieType: "right-half" },
+      { id: 8, x: 395, y: 190, pieType: "half-pie" },
+      { id: 9, x: 607, y: 32, pieType: "small-wedge" },
+      { id: 10, x: 791, y: 172, pieType: "half-pie" },
+      { id: 11, x: 823, y: 403, pieType: "right-half" },
+      { id: 12, x: 681, y: 584, pieType: "full-pie" },
+      { id: 13, x: 451, y: 615, pieType: "wedge-down" },
+      { id: 14, x: 268, y: 474, pieType: "right-half" },
+      { id: 15, x: 237, y: 245, pieType: "small-wedge" },
+      { id: 16, x: 377, y: 62, pieType: "half-pie" },
+      { id: 17, x: 824, y: 30, pieType: "right-half" },
+      { id: 18, x: 931, y: 217, pieType: "full-pie" },
+      { id: 19, x: 931, y: 431, pieType: "quarter" },
+      { id: 20, x: 823, y: 618, pieType: "quarter" },
+      { id: 21, x: 235, y: 618, pieType: "full-pie" },
+      { id: 22, x: 127, y: 431, pieType: "wedge-down" },
+      { id: 23, x: 126, y: 216, pieType: "small-wedge" },
+      { id: 24, x: 189, y: 67, pieType: "wedge-down" },
+      { id: 25, x: 955, y: 0, pieType: "half-pie" },
+      { id: 26, x: 1045, y: 184, pieType: "right-half" },
+      { id: 27, x: 1058, y: 393, pieType: "half-pie" },
+      { id: 28, x: 991, y: 590, pieType: "wedge-down" },
+      { id: 29, x: 115, y: 639, pieType: "wedge-down" },
+      { id: 30, x: 13, y: 462, pieType: "small-wedge" },
+      { id: 31, x: 0, y: 255, pieType: "quarter" },
+      { id: 32, x: 67, y: 58, pieType: "full-pie" },
     ];
 
-    // Assign random duration (2s-5s) and delay (0s-2s) to each node
     return rawNodes.map((node) => ({
       ...node,
       duration: `${(Math.random() * 3 + 2).toFixed(2)}s`,
       delay: `${(Math.random() * 2).toFixed(2)}s`,
     }));
   }, []);
-
-  const connections = [
-    // Main SVG paths from Figma
-    {
-      d: "M107.995 102.417L237.256 180.354V338.129M107.995 102.417L0.298462 182.547M107.995 102.417L237.256 0.785156L0.298462 37.4011",
-      offset: { x: 1076, y: 132 },
-    },
-    {
-      d: "M106.498 226.054L343.017 263.463L216.31 158.478L106.498 226.054ZM106.498 226.054V82.4532L0.305725 0.395508",
-      offset: { x: 970, y: 389 },
-    },
-    {
-      d: "M212.809 86.1226L371.085 0.439941M212.809 86.1226L79.5234 105.164L0.980301 213.458H155.686L212.809 86.1226Z",
-      offset: { x: 705, y: 470 },
-    },
-    {
-      d: "M401.59 477.502L269.68 458.264L110.542 377.569M404.849 106.942L480.943 0.5H322.143L404.849 106.942ZM404.849 106.942L269.68 130.785M269.68 130.785L213.211 296.085L110.542 377.569M269.68 130.785L110.542 217.86V377.569M110.542 377.569L108.02 518.898L0.262512 452.423",
-      offset: { x: 381, y: 97 },
-    },
-    {
-      d: "M236.436 37.5672L126.941 106.653M126.941 106.653L0.5 1.06885V186.167M126.941 106.653L0.5 186.167M0.5 186.167L236.436 348.29M126.941 419.242L0.5 523.49V348.29L126.941 419.242Z",
-      offset: { x: 253, y: 127 },
-    },
-    {
-      d: "M55.4803 164.001L0.878784 1.04883L160.418 88.0704L55.4803 164.001Z",
-      offset: { x: 687, y: 151 },
-    },
-  ];
 
   return (
     <div
@@ -192,82 +195,74 @@ const CoordinationShardView: React.FC = () => {
         backgroundColor: "#E8E8E8",
         border: "1px solid #000",
         overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <div
         style={{
-          position: "absolute",
-          left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
+          position: "relative",
           width: "1106px",
-          height: "632px",
+          height: "687px",
         }}
       >
-        {/* Connection Lines */}
-        {connections.map((conn, idx) => (
-          <svg
-            key={idx}
-            style={{
-              position: "absolute",
-              left: `${conn.offset.x}px`,
-              top: `${conn.offset.y}px`,
-              strokeWidth: "1px",
-              stroke: "rgba(0, 0, 0, 0.25)",
-              overflow: "visible",
-            }}
-          >
-            <path d={conn.d} stroke="black" strokeOpacity="0.25" fill="none" />
-          </svg>
-        ))}
+        {/* Connection Lines Layer */}
+        <svg
+          style={{
+            position: "absolute",
+            left: "-319px",
+            top: "-748px",
+            width: "2205px",
+            height: "2205px",
+          }}
+          viewBox="0 0 2205 2205"
+          fill="none"
+        >
+          <path
+            d="M1506.07 1018.16L1528.35 803.953"
+            stroke="black"
+            strokeOpacity="0.25"
+          />
+          <path
+            d="M699.671 1020L639.81 860.372"
+            stroke="black"
+            strokeOpacity="0.25"
+          />
+          <path
+            d="M966.344 989L951.172 865.936"
+            stroke="black"
+            strokeOpacity="0.25"
+          />
+
+        </svg>
 
         {/* Nodes */}
         {nodes.map((node) => (
           <ShardNode key={node.id} node={node} />
         ))}
 
-        {/* Central Coordination Shard Background (Animated) */}
-        <div
-          className="pie-fill-animation"
-          style={{
-            position: "absolute",
-            left: "434px",
-            top: "196px",
-            width: "240px",
-            height: "240px",
-            maskImage: `conic-gradient(from 0deg at 50% 50%, black var(--mask-angle), transparent var(--mask-angle))`,
-            WebkitMaskImage: `conic-gradient(from 0deg at 50% 50%, black var(--mask-angle), transparent var(--mask-angle))`,
-            animationDuration: "5s",
-          }}
-        >
-          <svg
-            width="240"
-            height="240"
-            viewBox="0 0 240 240"
-            fill="none"
-            style={{ width: "100%", height: "100%" }}
-          >
-            <circle cx="120" cy="120" r="117" fill="white" />
-          </svg>
-        </div>
-
-        {/* Central Coordination Shard Foreground (Static) */}
+        {/* Central Coordination Shard */}
         <svg
           style={{
             position: "absolute",
             left: "467px",
-            top: "199px",
-            width: "205px",
-            height: "210px",
+            top: "213px",
+            width: "206px",
+            height: "222px",
           }}
           width="206"
-          height="211"
-          viewBox="0 0 206 211"
+          height="222"
+          viewBox="0 0 206 222"
           fill="none"
         >
+          <path
+            d="M193.834 155.238C185.197 171.747 172.147 185.971 155.904 196.58L87.6953 108.294L87.6953 -7.62939e-05C107.619 -7.71081e-05 127.218 4.64714 144.656 13.5067C162.095 22.3663 176.805 35.1488 187.409 50.658C198.013 66.1672 204.164 83.8962 205.288 102.186C206.412 120.476 202.471 138.73 193.834 155.238Z"
+            fill="white"
+          />
           <circle
             cx="87.3501"
-            cy="117.166"
+            cy="134.296"
             r="86.8501"
             fill="white"
             stroke="#16171A"
@@ -281,18 +276,18 @@ const CoordinationShardView: React.FC = () => {
             fontWeight="bold"
             letterSpacing="-0.02em"
           >
-            <tspan x="14.1454" y="117.227">
+            <tspan x="14.1458" y="134.357">
               Coordination{" "}
             </tspan>
-            <tspan x="54.1083" y="145.227">
+            <tspan x="54.1086" y="162.357">
               Shard
             </tspan>
           </text>
         </svg>
 
-        {/* Snapshot 1 (Pink/Magenta) - selective local snapshot */}
+        {/* Snapshot 1 (Pink/Magenta) */}
         <svg
-          style={{ position: "absolute", left: "611px", top: "89px" }}
+          style={{ position: "absolute", left: "611px", top: "120px" }}
           width="20"
           height="20"
           viewBox="0 0 20 20"
@@ -301,9 +296,9 @@ const CoordinationShardView: React.FC = () => {
           <circle cx="10" cy="10" r="10" fill="#FF00FF" />
         </svg>
 
-        {/* Snapshot 2 (Blue) - global snapshot */}
+        {/* Snapshot 2 (Blue) */}
         <svg
-          style={{ position: "absolute", left: "443px", top: "405px" }}
+          style={{ position: "absolute", left: "443px", top: "436px" }}
           width="20"
           height="20"
           viewBox="0 0 20 20"
@@ -317,44 +312,45 @@ const CoordinationShardView: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          top: "0",
-          right: "0",
-          width: "auto",
-          padding: "20px 28px",
+          top: "20px",
+          right: "20px",
+          padding: "15px 20px",
           backgroundColor: "#FFF",
           border: "1px solid #000",
           display: "flex",
           flexDirection: "column",
-          gap: "14px",
+          gap: "10px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <svg width="20" height="20" viewBox="0 0 20 20">
-            <circle cx="10" cy="10" r="10" fill="#FF00FF" />
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <svg width="16" height="16" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="8" fill="#FF00FF" />
           </svg>
           <span
             style={{
               color: "#000",
               fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-              fontSize: "20px",
+              fontSize: "14px",
               fontWeight: "600",
-              lineHeight: "24px",
+              lineHeight: "16px",
+              whiteSpace: "nowrap",
             }}
           >
             selective local snapshot
           </span>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <svg width="20" height="20" viewBox="0 0 20 20">
-            <circle cx="10" cy="10" r="10" fill="#0000FF" />
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <svg width="16" height="16" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="8" fill="#0000FF" />
           </svg>
           <span
             style={{
               color: "#000",
               fontFamily: "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-              fontSize: "20px",
+              fontSize: "14px",
               fontWeight: "600",
-              lineHeight: "24px",
+              lineHeight: "16px",
+              whiteSpace: "nowrap",
             }}
           >
             global snapshot
