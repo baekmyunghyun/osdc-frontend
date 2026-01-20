@@ -48,6 +48,11 @@ export default function Index() {
   // 애니메이션 큐 (WebSocket → RAF에서 처리)
   const animQueueRef = useRef<AnimationLogEntry[]>([]);
   const animCountRef = useRef(0);
+  const activeTabRef = useRef(activeTab);
+
+  useEffect(() => {
+    activeTabRef.current = activeTab;
+  }, [activeTab]);
 
   useEffect(() => {
     fetch("/api/raw-logs")
@@ -120,6 +125,15 @@ export default function Index() {
         for (let i = 0; i < toProcess; i++) {
           const entry = queue[i];
           const toShard = entry.to_shard ?? entry.from_shard;
+
+          // Single Shard mode (Tab 3): Filter specific shards
+          if (activeTabRef.current === 3) {
+            const allowed = [0, 7, 21];
+            if (!allowed.includes(entry.from_shard) && !allowed.includes(toShard)) {
+              continue;
+            }
+          }
+
           worldMapRef.current.addParticle(
             entry.from_shard,
             toShard,
@@ -209,7 +223,7 @@ export default function Index() {
     >
       {activeTab === 1 && <WorldMap ref={worldMapRef} showShardNumbers={true} activeTab={1} />}
       {activeTab === 2 && <CoordinationShardView />}
-      {activeTab === 3 && <WorldMap ref={worldMapRef} showShardNumbers={false} activeTab={3} />}
+      {activeTab === 3 && <WorldMap ref={worldMapRef} showShardNumbers={true} activeTab={3} />}
     </Dashboard>
   );
 }

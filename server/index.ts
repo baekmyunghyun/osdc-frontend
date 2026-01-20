@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { handleGetLogs, handleGetRawLogs } from "./routes/logs";
+import { handleGetLogs, handleGetRawLogs, handleGetConsensusLogs, handleGetSnapshotLogs } from "./routes/logs";
 
 export function createServer() {
   const app = express();
@@ -31,6 +31,8 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
   app.get("/api/logs", handleGetLogs);
   app.get("/api/raw-logs", handleGetRawLogs);
+  app.get("/api/logs/consensus", handleGetConsensusLogs);
+  app.get("/api/logs/snapshots", handleGetSnapshotLogs);
 
   return app;
 }

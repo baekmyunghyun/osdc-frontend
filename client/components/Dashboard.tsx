@@ -123,10 +123,13 @@ const Dashboard: React.FC<DashboardProps> = ({
             <button style={getButtonStyle(2)} onClick={() => onTabChange(2)}>
               Overview
             </button>
+            <button style={getButtonStyle(3)} onClick={() => onTabChange(3)}>
+              Single Shard
+            </button>
           </div>
 
           {/* Legend Box - Right Side (only on screen 1) */}
-          {activeTab === 1 && (
+          {(activeTab === 1 || activeTab === 3) && (
             <div
               style={{
                 position: "absolute",

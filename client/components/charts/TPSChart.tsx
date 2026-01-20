@@ -36,7 +36,10 @@ export default function TPSChart({ data }: TPSChartProps) {
           interval="preserveStartEnd"
           minTickGap={30}
         />
-        <YAxis />
+        <YAxis 
+          domain={[(dataMin: number) => Math.floor(dataMin * 0.99), 'auto']} 
+          tick={{ fontSize: 12 }} 
+        />
         <Tooltip 
           contentStyle={{ backgroundColor: "#fff", borderColor: "#ccc" }}
           itemStyle={{ color: "#8884d8" }}

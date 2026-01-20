@@ -1,73 +1,60 @@
 import React from "react";
 
+import { Button } from "@/components/ui/button";
+
 interface NodeData {
   id: number;
   x: number;
   y: number;
-  pieType: string;
   duration?: string;
   delay?: string;
+  isActive?: boolean;
 }
 
+const RAW_NODES = [
+  { id: 1, x: 759, y: 164 },
+  { id: 2, x: 913, y: 190 },
+  { id: 3, x: 967, y: 352.5 },
+  { id: 4, x: 913, y: 516 },
+  { id: 5, x: 759, y: 538 },
+  { id: 6, x: 605, y: 516 },
+  { id: 7, x: 550, y: 352.17 },
+  { id: 8, x: 605, y: 189 },
+  { id: 9, x: 837, y: 60 },
+  { id: 10, x: 1103, y: 274 },
+  { id: 11, x: 1103, y: 432 },
+  { id: 12, x: 837, y: 644 },
+  { id: 13, x: 681, y: 644 },
+  { id: 14, x: 417, y: 434 },
+  { id: 15, x: 417, y: 274 },
+  { id: 16, x: 681, y: 60 },
+  { id: 17, x: 1104, y: 129 },
+  { id: 18, x: 1261, y: 196 },     
+  { id: 19, x: 1261, y: 510 },
+  { id: 20, x: 1103, y: 577 },
+  { id: 21, x: 415, y: 577 },
+  { id: 22, x: 257, y: 510 },
+  { id: 23, x: 256, y: 195 },
+  { id: 24, x: 415, y: 128 },
+  { id: 25, x: 1388, y: 93 },
+  { id: 26, x: 1448, y: 274 },
+  { id: 27, x: 1448, y: 432 },
+  { id: 28, x: 1380, y: 611 },
+  { id: 29, x: 130, y: 611 },
+  { id: 30, x: 70, y: 434 },
+  { id: 31, x: 70, y: 274 },
+  { id: 32, x: 130, y: 93 },
+];
+
+const SHARD_CENTER_POS = RAW_NODES.reduce((acc, node) => {
+  acc[node.id] = { x: node.x + 24, y: node.y + 24 };
+  return acc;
+}, {} as Record<number, { x: number; y: number }>);
+
+// Shard 0 Center (calculated from svg position)
+SHARD_CENTER_POS[0] = { x: 783.35, y: 375.11 };
+
 const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
-  const renderPieSegment = (type: string) => {
-    const fillColor = "#989FAF";
-
-    // Different pie types from Figma
-    const pieTypes: Record<string, JSX.Element> = {
-      "full-pie": (
-        <path
-          d="M60 30C60 46.5685 46.5685 60 30 60C13.4315 60 0 46.5685 0 30C0 18.5335 6.43302 8.56956 15.8868 3.52032L30 30V0C46.5685 0 60 13.4315 60 30Z"
-          fill={fillColor}
-        />
-      ),
-      quarter: (
-        <path d="M0 0C16.5685 0 30 13.4315 30 30H0V0Z" fill={fillColor} />
-      ),
-      "half-pie": (
-        <path
-          d="M60 30C60 46.5685 46.5685 60 30 60C13.4315 60 0 46.5685 0 30H30V0C46.5685 0 60 13.4315 60 30Z"
-          fill={fillColor}
-        />
-      ),
-      "right-half": (
-        <path
-          d="M30 30C30 46.5685 16.5685 60 0 60V0C16.5685 0 30 13.4315 30 30Z"
-          fill={fillColor}
-        />
-      ),
-      "small-wedge": (
-        <path
-          d="M0 0V30L19.9605 7.6036C14.6576 2.87422 7.66448 0 0 0Z"
-          fill={fillColor}
-        />
-      ),
-      "wedge-down": (
-        <path
-          d="M0 0C16.5685 0 30 13.4315 30 30C30 41.0616 24.0133 50.7249 15.1033 55.9265L0 30V0Z"
-          fill={fillColor}
-        />
-      ),
-    };
-
-    return (
-      <svg
-        width="60"
-        height="60"
-        viewBox="0 0 60 60"
-        fill="none"
-        style={{
-          position: "absolute",
-          left: "-6px",
-          top: "-6px",
-          overflow: "visible",
-        }}
-      >
-        {pieTypes[type] || pieTypes["full-pie"]}
-      </svg>
-    );
-  };
-
   return (
     <div
       style={{
@@ -77,6 +64,7 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
         width: "48px",
         height: "48px",
         overflow: "visible",
+        zIndex: 42,
       }}
     >
       <div
@@ -105,7 +93,9 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
             transform: "translate(-50%, -50%)",
             pointerEvents: "none",
             animationDuration: node.duration || "2s",
-            animationDelay: node.delay || "0s",
+            // animationDelay: node.delay || "0s", // Controlled by playback
+            opacity: node.isActive ? 1 : 0,
+            transition: "opacity 0.2s",
           }}
         >
           <div
@@ -118,7 +108,20 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
               transform: "translate(-50%, -50%)",
             }}
           >
-            {renderPieSegment(node.pieType)}
+             <svg
+              width="60"
+              height="60"
+              viewBox="0 0 60 60"
+              fill="none"
+              style={{
+                position: "absolute",
+                left: "-6px",
+                top: "-6px",
+                overflow: "visible",
+              }}
+            >
+              <circle cx="30" cy="30" r="30" fill="#989FAF" />
+            </svg>
           </div>
         </div>
         <div
@@ -142,49 +145,192 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
   );
 };
 
-const CoordinationShardView: React.FC = () => {
-  const nodes: NodeData[] = React.useMemo(() => {
-    const rawNodes = [
-      { id: 1, x: 759, y: 164, pieType: "full-pie" },
-      { id: 2, x: 913, y: 190, pieType: "quarter" },
-      { id: 3, x: 967, y: 352.5, pieType: "full-pie" },
-      { id: 4, x: 913, y: 516, pieType: "half-pie" },
-      { id: 5, x: 759, y: 538, pieType: "right-half" },
-      { id: 6, x: 605, y: 516, pieType: "full-pie" },
-      { id: 7, x: 511, y: 352.17, pieType: "right-half" },
-      { id: 8, x: 605, y: 189, pieType: "half-pie" },
-      { id: 9, x: 837, y: 60, pieType: "small-wedge" },
-      { id: 10, x: 1103, y: 274, pieType: "half-pie" },
-      { id: 11, x: 1103, y: 432, pieType: "right-half" },
-      { id: 12, x: 837, y: 644, pieType: "full-pie" },
-      { id: 13, x: 681, y: 644, pieType: "wedge-down" },
-      { id: 14, x: 417, y: 434, pieType: "right-half" },
-      { id: 15, x: 417, y: 274, pieType: "small-wedge" },
-      { id: 16, x: 681, y: 60, pieType: "half-pie" },
-      { id: 17, x: 1104, y: 129, pieType: "right-half" },
-      { id: 18, x: 1261, y: 196, pieType: "full-pie" },     
-      { id: 19, x: 1261, y: 510, pieType: "quarter" },
-      { id: 20, x: 1103, y: 577, pieType: "quarter" },
-      { id: 21, x: 415, y: 577, pieType: "full-pie" },
-      { id: 22, x: 257, y: 510, pieType: "wedge-down" },
-      { id: 23, x: 256, y: 195, pieType: "small-wedge" },
-      { id: 24, x: 415, y: 128, pieType: "wedge-down" },
-      { id: 25, x: 1388, y: 93, pieType: "half-pie" },
-      { id: 26, x: 1448, y: 274, pieType: "right-half" },
-      { id: 27, x: 1448, y: 432, pieType: "half-pie" },
-      { id: 28, x: 1338, y: 611, pieType: "wedge-down" },
-      { id: 29, x: 130, y: 611, pieType: "wedge-down" },
-      { id: 30, x: 70, y: 434, pieType: "small-wedge" },
-      { id: 31, x: 70, y: 274, pieType: "quarter" },
-      { id: 32, x: 130, y: 93, pieType: "full-pie" },
-    ];
+interface SnapshotParticle {
+  id: string;
+  from: { x: number; y: number };
+  to: { x: number; y: number };
+  progress: number;
+  type: string;
+}
 
-    return rawNodes.map((node) => ({
-      ...node,
-      duration: `${(Math.random() * 3 + 2).toFixed(2)}s`,
-      delay: `${(Math.random() * 2).toFixed(2)}s`,
-    }));
+const CoordinationShardView: React.FC = () => {
+  const [shardStates, setShardStates] = React.useState<Record<number, { isActive: boolean; duration: number }>>({});
+  const [snapshotParticles, setSnapshotParticles] = React.useState<SnapshotParticle[]>([]);
+  const [speed, setSpeed] = React.useState(1.0);
+  const speedRef = React.useRef(1.0);
+
+  React.useEffect(() => {
+    speedRef.current = speed;
+  }, [speed]);
+
+  React.useEffect(() => {
+    let animationFrameId: number;
+    let timeline: Record<number, Array<{ startOffset: number; endOffset: number; duration: number }>> = {};
+    let snapshotTimeline: Array<{ id: string; startOffset: number; endOffset: number; duration: number; type: string; from: number; to: number }> = [];
+    let playbackStart: number = 0;
+
+    Promise.all([
+      fetch("/api/logs/consensus").then((res) => res.json()),
+      fetch("/api/logs/snapshots").then((res) => res.json())
+    ])
+      .then(([consensusData, snapshotData]) => {
+        const parsedConsensus = (Array.isArray(consensusData) ? consensusData : [])
+          .map((entry: any) => {
+            if (!entry.start_timestamp || !entry.time || typeof entry.shard !== 'number') return null;
+            return {
+              shard: entry.shard,
+              startTick: new Date(entry.start_timestamp.replace(" ", "T")).getTime(),
+              durationSec: entry.time,
+            };
+          })
+          .filter((e: any) => e !== null)
+          .sort((a: any, b: any) => a.startTick - b.startTick);
+
+        const parsedSnapshots = (Array.isArray(snapshotData) ? snapshotData : [])
+          .map((entry: any, idx: number) => {
+            if (!entry.from_timestamp || !entry.to_timestamp) return null;
+            const startTick = new Date(entry.from_timestamp.replace(" ", "T")).getTime();
+            const endTick = new Date(entry.to_timestamp.replace(" ", "T")).getTime();
+            // Minimum visual duration of 500ms if real duration is too short for eye to see path
+            let durationSec = (endTick - startTick) / 1000;
+            // if (durationSec < 0.5) durationSec = 0.5; 
+            
+            return {
+              id: `snap-${idx}`,
+              startTick,
+              durationSec,
+              type: entry.type,
+              from: entry.from_shard,
+              to: entry.to_shard
+            };
+          })
+          .filter((e: any) => e !== null);
+
+        if (parsedConsensus.length === 0 && parsedSnapshots.length === 0) return;
+
+        let baseTime = Date.now();
+        if (parsedConsensus.length > 0) baseTime = parsedConsensus[0].startTick;
+        if (parsedSnapshots.length > 0) {
+           const snapStart = Math.min(...parsedSnapshots.map((s: any) => s.startTick));
+           baseTime = Math.min(baseTime, snapStart);
+        }
+
+        // Build Consensus Timeline
+        parsedConsensus.forEach((e: any) => {
+          if (!timeline[e.shard]) timeline[e.shard] = [];
+          const startOffset = e.startTick - baseTime;
+          const durationMs = e.durationSec * 1000;
+          
+          timeline[e.shard].push({
+            startOffset: startOffset,
+            endOffset: startOffset + durationMs,
+            duration: e.durationSec,
+          });
+        });
+
+        // Build Snapshot Timeline
+        parsedSnapshots.forEach((e: any) => {
+           const startOffset = e.startTick - baseTime;
+           // Ensure it has some duration for visualization
+           const durationMs = Math.max(e.durationSec * 1000, 1000); 
+           
+           snapshotTimeline.push({
+             id: e.id,
+             startOffset: startOffset,
+             endOffset: startOffset + durationMs,
+             duration: durationMs / 1000,
+             type: e.type,
+             from: e.from,
+             to: e.to
+           });
+        });
+
+        // Start Animation Loop
+        // playbackStart = Date.now();
+        let lastFrameTime = Date.now();
+        let elapsed = 0;
+
+        const loop = () => {
+          const now = Date.now();
+          // const elapsed = now - playbackStart;
+          const dt = now - lastFrameTime;
+          lastFrameTime = now;
+          elapsed += dt * speedRef.current;
+          
+          // 1. Update Shard States
+          const newStates: Record<number, { isActive: boolean; duration: number }> = {};
+          let hasActive = false;
+          
+          Object.keys(timeline).forEach((key) => {
+             const shardId = Number(key);
+             const events = timeline[shardId];
+             const activeEvent = events.find(ev => elapsed >= ev.startOffset && elapsed < ev.endOffset);
+             
+             if (activeEvent) {
+               newStates[shardId] = { isActive: true, duration: activeEvent.duration / speedRef.current };
+               hasActive = true;
+             } else {
+               newStates[shardId] = { isActive: false, duration: 2 }; 
+             }
+          });
+
+          setShardStates((prev) => {
+              let changed = false;
+              const keys = Object.keys(newStates);
+              if (Object.keys(prev).length !== keys.length) changed = true;
+              else {
+                  for (const key of keys) {
+                      const k = Number(key);
+                      const p = prev[k];
+                      const n = newStates[k];
+                      if (!p || p.isActive !== n.isActive || Math.abs(p.duration - n.duration) > 0.001) {
+                          changed = true;
+                          break;
+                      }
+                  }
+              }
+              return changed ? newStates : prev;
+          });
+
+          // 2. Update Snapshot Particles
+          const activeSnapshots = snapshotTimeline.filter(s => elapsed >= s.startOffset && elapsed <= s.endOffset);
+          const currentParticles = activeSnapshots.map(s => {
+              const progress = (elapsed - s.startOffset) / (s.duration * 1000);
+              const fromPos = SHARD_CENTER_POS[s.from] || { x: 0, y: 0 };
+              const toPos = SHARD_CENTER_POS[s.to] || { x: 0, y: 0 };
+              return {
+                  id: s.id,
+                  from: fromPos,
+                  to: toPos,
+                  progress: Math.min(Math.max(progress, 0), 1),
+                  type: s.type
+              };
+          });
+          
+          setSnapshotParticles(currentParticles);
+
+          animationFrameId = requestAnimationFrame(loop);
+        };
+
+        loop();
+      })
+      .catch((err) => console.error("Failed to fetch logs:", err));
+
+    return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
   }, []);
+
+  const nodes: NodeData[] = React.useMemo(() => {
+    return RAW_NODES.map((node) => ({
+      ...node,
+      isActive: shardStates[node.id]?.isActive ?? false,
+      duration: shardStates[node.id]?.duration ? `${shardStates[node.id].duration.toFixed(2)}s` : "2s",
+      delay: "0s",
+    }));
+  }, [shardStates]);
+
+  const shard0 = shardStates[0] || { isActive: false, duration: 2 };
 
   return (
     <div
@@ -323,7 +469,44 @@ const CoordinationShardView: React.FC = () => {
           <ShardNode key={node.id} node={node} />
         ))}
 
-        {/* Central Coordination Shard */}
+        {/* Central Coordination Shard Animation */}
+        <div
+          style={{
+            position: "absolute",
+            left: "696px",
+            top: "258px",
+            width: "205px",
+            height: "210px",
+            zIndex: 50,
+            pointerEvents: "none",
+          }}
+        >
+           <div
+              className="pie-fill-animation"
+              style={{
+                position: "absolute",
+                width: "250px",
+                height: "250px",
+                left: "87.3501px",
+                top: "117.113px",
+                transform: "translate(-50%, -50%)",
+                animationDuration: `${shard0.duration}s`,
+                opacity: shard0.isActive ? 1 : 0,
+                transition: "opacity 0.2s",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "white",
+                  borderRadius: "50%",
+                }}
+              />
+          </div>
+        </div>
+
+        {/* Central Coordination Shard (Original) */}
         <svg
           style={{
             position: "absolute",
@@ -331,13 +514,11 @@ const CoordinationShardView: React.FC = () => {
             top: "258px",
             width: "205px",
             height: "210px",
+            zIndex: 50,
           }}
           fill="none"
         >
-          <path
-            d="M193.834 166.054C185.197 183.713 172.147 198.928 155.904 210.276L87.6953 115.839L87.6953 4.57764e-05C107.619 4.49055e-05 127.218 4.97104 144.656 14.4479C162.095 23.9248 176.805 37.5978 187.409 54.1875C198.013 70.7773 204.164 89.7416 205.288 109.306C206.412 128.87 202.471 148.395 193.834 166.054Z"
-            fill="white"
-          />
+          {/* Background shape removed as per request */}
           <circle
             cx="87.3501"
             cy="117.113"
@@ -363,27 +544,60 @@ const CoordinationShardView: React.FC = () => {
           </text>
         </svg>
 
-        {/* Snapshot 1 (Pink/Magenta) */}
-        <svg
-          style={{ position: "absolute", left: "771px", top: "89px" }}
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-        >
-          <circle cx="10" cy="10" r="10" fill="#FF00FF" />
-        </svg>
+        {/* Snapshot Particles */}
+        {snapshotParticles.map((p) => {
+           const currentX = p.from.x + (p.to.x - p.from.x) * p.progress;
+           const currentY = p.from.y + (p.to.y - p.from.y) * p.progress;
+           const color = p.type === 'global_snapshot' ? '#0000FF' : '#FF00FF';
+           
+           return (
+               <div
+                  key={p.id}
+                  style={{
+                      position: 'absolute',
+                      left: `${currentX}px`,
+                      top: `${currentY}px`,
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '50%',
+                      backgroundColor: color,
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 40,
+                      boxShadow: `0 0 4px ${color}`,
+                      pointerEvents: 'none'
+                  }}
+               />
+           );
+        })}
+      </div>
 
-        {/* Snapshot 2 (Blue) */}
-        <svg
-          style={{ position: "absolute", left: "603px", top: "405px" }}
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-        >
-          <circle cx="10" cy="10" r="10" fill="#0000FF" />
-        </svg>
+      {/* Speed Controls */}
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "1000px",
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          backgroundColor: "#E9E9EA",
+          padding: "8px",
+          border: "1px solid #000",
+        }}
+      >
+        <span style={{ fontWeight: "600", color: "#000", marginRight: "4px" }}>Speed:</span>
+        {[1.0, 0.5, 0.2, 0.1].map((s) => (
+           <Button 
+             key={s}
+             size="sm" 
+             variant={speed === s ? "default" : "outline"} 
+             onClick={() => setSpeed(s)}
+             className="h-7 px-2 text-xs"
+           >
+             {s}x
+           </Button>
+        ))}
       </div>
 
       {/* Legend - Top Right */}

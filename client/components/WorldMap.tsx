@@ -662,7 +662,7 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
   }));
 
   useEffect(() => {
-    if (!containerRef.current || activeTab === 3) return;
+    if (!containerRef.current) return;
 
     // 1. Setup Canvas Overlay
     const canvas = document.createElement("canvas");
@@ -884,8 +884,11 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
 
         {/* 33개 샤드 번호 표시 (절대좌표) */}
         {showShardNumbers &&
-          SHARDS.map((nodes, shardId) =>
-            nodes.map((node, idx) => (
+          SHARDS.map((nodes, shardId) => {
+            // Tab 3: Only show 0, 7, 21
+            if (activeTab === 3 && ![0, 7, 21].includes(shardId)) return null;
+            
+            return nodes.map((node, idx) => (
               <div
                 key={`shard-${shardId}-${idx}`}
                 className="absolute flex items-center justify-center"
@@ -896,7 +899,7 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
                   height: "23px",
                   borderRadius: "50%",
                   backgroundColor: "#000",
-                  zIndex: 15,
+                  //zIndex: 10005,
                 }}
               >
                 <span
@@ -908,13 +911,14 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
                     letterSpacing: "-0.3px",
                     fontFamily:
                       "Outfit, -apple-system, Roboto, Helvetica, sans-serif",
+
                   }}
                 >
                   {shardId}
                 </span>
               </div>
             ))
-          )}
+          })}
       </div>
     </div>
   );
