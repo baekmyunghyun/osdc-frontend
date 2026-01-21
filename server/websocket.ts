@@ -68,7 +68,7 @@ export function setupWebSocket(server: Server) {
     console.log("Client connected to WebSocket");
     ws.send(JSON.stringify({ type: "status", message: "Connected" }));
 
-    const logPath = path.join(process.cwd(), "logs", "merged_messages_sorted.json");
+    const logPath = path.join(process.cwd(), "logs", "merged_messages.json");
     if (!fs.existsSync(logPath)) {
       ws.send(JSON.stringify({ type: "error", message: "Log file not found" }));
       return;
