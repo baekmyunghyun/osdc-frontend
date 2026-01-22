@@ -170,75 +170,99 @@ const CoordinationShardView: React.FC = () => {
     let playbackStart: number = 0;
 
     Promise.all([
-      fetch("/api/logs/consensus").then((res) => res.json()),
-      fetch("/api/logs/snapshots").then((res) => res.json())
+      fetch("/api/logs/consensus").then((res) => res.json())
     ])
-      .then(([consensusData, snapshotData]) => {
-        const parsedConsensus = (Array.isArray(consensusData) ? consensusData : [])
-          .map((entry: any) => {
-            if (!entry.start_timestamp || !entry.time || typeof entry.shard !== 'number') return null;
-            return {
-              shard: entry.shard,
-              startTick: new Date(entry.start_timestamp.replace(" ", "T")).getTime(),
-              durationSec: entry.time,
-            };
-          })
-          .filter((e: any) => e !== null)
-          .sort((a: any, b: any) => a.startTick - b.startTick);
+      .then(([mergedData]) => {
+        const data = Array.isArray(mergedData) ? mergedData : [];
+        
+        let minTime = Number.MAX_VALUE;
+        
+        // 1. worker_consensus 파싱
+        const workerConsensus = data
+          .filter((e: any) => e.type === "worker_consensus")
+          .map((e: any) => {
+             const startTick = new Date(e.start_timestamp.replace(" ", "T")).getTime();
+             if (startTick < minTime) minTime = startTick;
+             return {
+               shard: e.shard,
+               startTick: startTick,
+               durationSec: e.time
+             };
+          });
 
-        const parsedSnapshots = (Array.isArray(snapshotData) ? snapshotData : [])
-          .map((entry: any, idx: number) => {
-            if (!entry.from_timestamp || !entry.to_timestamp) return null;
-            const startTick = new Date(entry.from_timestamp.replace(" ", "T")).getTime();
-            const endTick = new Date(entry.to_timestamp.replace(" ", "T")).getTime();
-            // Minimum visual duration of 500ms if real duration is too short for eye to see path
-            let durationSec = (endTick - startTick) / 1000;
-            // if (durationSec < 0.5) durationSec = 0.5; 
+        // 2. coordination_consensus 파싱
+        const coordConsensus = data
+          .filter((e: any) => e.type === "coordination_consensus")
+          .map((e: any) => {
+             const startTick = new Date(e.start_timestamp.replace(" ", "T")).getTime();
+             if (startTick < minTime) minTime = startTick;
+             return {
+               shard: 0, // Coordination Shard is Shard 0 visually
+               startTick: startTick,
+               durationSec: e.time
+             };
+          });
+        
+        // 3. snapshot 파싱
+        const snapshots = data
+          .filter((e: any) => e.type === "global_snapshot" || e.type === "selective_local_snapshot")
+          .map((e: any, idx: number) => {
+            const startTick = new Date(e.from_timestamp.replace(" ", "T")).getTime();
+            const endTick = new Date(e.to_timestamp.replace(" ", "T")).getTime();
+            if (startTick < minTime) minTime = startTick;
             
+            // 시각화를 위해 최소 지속시간 보장
+            let durationSec = (endTick - startTick) / 1000;
+            const durationMs = Math.max(durationSec * 1000, 1000); 
+
             return {
               id: `snap-${idx}`,
               startTick,
-              durationSec,
-              type: entry.type,
-              from: entry.from_shard,
-              to: entry.to_shard
+              // endTick: startTick + durationMs,
+              durationMs,
+              type: e.type,
+              from: e.from_shard,
+              to: e.to_shard
             };
-          })
-          .filter((e: any) => e !== null);
-
-        if (parsedConsensus.length === 0 && parsedSnapshots.length === 0) return;
-
-        let baseTime = Date.now();
-        if (parsedConsensus.length > 0) baseTime = parsedConsensus[0].startTick;
-        if (parsedSnapshots.length > 0) {
-           const snapStart = Math.min(...parsedSnapshots.map((s: any) => s.startTick));
-           baseTime = Math.min(baseTime, snapStart);
-        }
-
-        // Build Consensus Timeline
-        parsedConsensus.forEach((e: any) => {
-          if (!timeline[e.shard]) timeline[e.shard] = [];
-          const startOffset = e.startTick - baseTime;
-          const durationMs = e.durationSec * 1000;
-          
-          timeline[e.shard].push({
-            startOffset: startOffset,
-            endOffset: startOffset + durationMs,
-            duration: e.durationSec,
           });
+
+        if (minTime === Number.MAX_VALUE) return;
+
+        // 타임라인 빌드
+        
+        // Worker Consensus - Shard 1~32
+        workerConsensus.forEach((e: any) => {
+           if (!timeline[e.shard]) timeline[e.shard] = [];
+           const startOffset = e.startTick - minTime;
+           const durationMs = e.durationSec * 1000;
+           timeline[e.shard].push({
+             startOffset,
+             endOffset: startOffset + durationMs,
+             duration: e.durationSec
+           });
         });
 
-        // Build Snapshot Timeline
-        parsedSnapshots.forEach((e: any) => {
-           const startOffset = e.startTick - baseTime;
-           // Ensure it has some duration for visualization
-           const durationMs = Math.max(e.durationSec * 1000, 1000); 
-           
+        // Coordination Consensus - Shard 0
+        coordConsensus.forEach((e: any) => {
+           // Shard 0 (Center) timeline
+           if (!timeline[0]) timeline[0] = [];
+           const startOffset = e.startTick - minTime;
+           const durationMs = e.durationSec * 1000;
+           timeline[0].push({
+             startOffset,
+             endOffset: startOffset + durationMs,
+             duration: e.durationSec
+           });
+        });
+
+        // Snapshots
+        snapshots.forEach((e: any) => {
+           const startOffset = e.startTick - minTime;
            snapshotTimeline.push({
              id: e.id,
-             startOffset: startOffset,
-             endOffset: startOffset + durationMs,
-             duration: durationMs / 1000,
+             startOffset,
+             endOffset: startOffset + e.durationMs,
+             duration: e.durationMs / 1000,
              type: e.type,
              from: e.from,
              to: e.to

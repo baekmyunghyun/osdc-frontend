@@ -129,7 +129,7 @@ export default function Index() {
           // Single Shard mode (Tab 3): Filter specific shards
           if (activeTabRef.current === 3) {
             const allowed = [0, 7, 21];
-            if (!allowed.includes(entry.from_shard) && !allowed.includes(toShard)) {
+            if (!allowed.includes(entry.from_shard) || !allowed.includes(toShard)) {
               continue;
             }
           }
