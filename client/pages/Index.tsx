@@ -23,6 +23,7 @@ interface AnimationLogEntry {
   category: string;
 }
 
+
 export default function Index() {
   const [metrics, setMetrics] = useState({
     totalTPS: 0,
@@ -40,11 +41,12 @@ export default function Index() {
   const [logs, setLogs] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState(1);
   const [timeSeriesData, setTimeSeriesData] = useState<LogEntry[]>([]);
-  
+  const [startDashboard, setStartDashboard] = useState(false); // WebSocket에서 batch 오면 true
+
   const mainLogsRef = useRef<string[]>([]);
   const mainLogCursorRef = useRef(0);
   const worldMapRef = useRef<WorldMapHandle>(null);
-  
+
   // 애니메이션 큐 (WebSocket → RAF에서 처리)
   const animQueueRef = useRef<AnimationLogEntry[]>([]);
   const animCountRef = useRef(0);
@@ -54,7 +56,50 @@ export default function Index() {
     activeTabRef.current = activeTab;
   }, [activeTab]);
 
+  // WebSocket 연결 및 batch 감지
   useEffect(() => {
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const ws = new WebSocket(`${protocol}//${window.location.host}/ws/logs`);
+
+    ws.onopen = () => console.log("✅ WebSocket connected");
+    ws.onerror = (e) => console.error("❌ WebSocket error:", e);
+
+    let batchReceived = false;
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+
+        if (msg.type === "complete") {
+          console.log("✅ Stream complete. Total:", animCountRef.current);
+          return;
+        }
+        if (msg.type !== "batch" || !Array.isArray(msg.data)) return;
+
+        // 최초 batch 수신 시 대시보드/로그 시작
+        if (!batchReceived) {
+          batchReceived = true;
+          setStartDashboard(true);
+        }
+
+        // 배치 파싱 후 큐에 추가
+        for (let i = 0; i < msg.data.length; i++) {
+          try {
+            const entry = JSON.parse(msg.data[i]);
+            if (entry.from_shard !== undefined && entry.from_node !== undefined) {
+              animQueueRef.current.push(entry);
+            }
+          } catch {}
+        }
+      } catch {}
+    };
+
+    return () => ws.close();
+  }, []);
+
+  // Dashboard/Log fetch: startDashboard true일 때만 동작
+  useEffect(() => {
+    if (!startDashboard) return;
+
     fetch("/api/raw-logs")
       .then((res) => res.text())
       .then((text) => {
@@ -78,50 +123,19 @@ export default function Index() {
         }
       })
       .catch((err) => console.error("Failed to load logs:", err));
-
-    // WebSocket
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const ws = new WebSocket(`${protocol}//${window.location.host}/ws/logs`);
-
-    ws.onopen = () => console.log("✅ WebSocket connected");
-    ws.onerror = (e) => console.error("❌ WebSocket error:", e);
-
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        
-        if (msg.type === "complete") {
-          console.log("✅ Stream complete. Total:", animCountRef.current);
-          return;
-        }
-        if (msg.type !== "batch" || !Array.isArray(msg.data)) return;
-
-        // 배치 파싱 후 큐에 추가
-        for (let i = 0; i < msg.data.length; i++) {
-          try {
-            const entry = JSON.parse(msg.data[i]);
-            if (entry.from_shard !== undefined && entry.from_node !== undefined) {
-              animQueueRef.current.push(entry);
-            }
-          } catch {}
-        }
-      } catch {}
-    };
-
-    return () => ws.close();
-  }, []);
+  }, [startDashboard]);
 
   // RAF 기반 애니메이션 처리 (렉 방지)
   useEffect(() => {
     let rafId: number;
     const MAX_PER_FRAME = 100; // 프레임당 최대 100개 처리
-    
+
     const processQueue = () => {
       const queue = animQueueRef.current;
-      
+
       if (queue.length > 0 && worldMapRef.current) {
         const toProcess = Math.min(queue.length, MAX_PER_FRAME);
-        
+
         for (let i = 0; i < toProcess; i++) {
           const entry = queue[i];
           const toShard = entry.to_shard ?? entry.from_shard;
@@ -143,31 +157,31 @@ export default function Index() {
           );
           animCountRef.current++;
         }
-        
+
         // 처리한 항목 제거
         animQueueRef.current = queue.slice(toProcess);
-        
+
         if (animCountRef.current % 5000 === 0) {
           console.log(`🎯 Animations: ${animCountRef.current}, Queue: ${animQueueRef.current.length}`);
         }
       }
-      
+
       rafId = requestAnimationFrame(processQueue);
     };
-    
+
     rafId = requestAnimationFrame(processQueue);
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  // Chart 업데이트
+  // Chart 업데이트: startDashboard true일 때만 동작
   useEffect(() => {
-    if (timeSeriesData.length === 0) return;
+    if (!startDashboard || timeSeriesData.length === 0) return;
 
     let idx = 0;
     const interval = setInterval(() => {
       if (idx >= timeSeriesData.length) idx = 0;
       const d = timeSeriesData[idx];
-      
+
       setMetrics({
         totalTPS: d.tps,
         avgSingleShardTPS: d.avgSingleShardTPS,
@@ -185,10 +199,11 @@ export default function Index() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeSeriesData]);
+  }, [startDashboard, timeSeriesData]);
 
-  // Main Logs 스트리밍
+  // Main Logs 스트리밍: startDashboard true일 때만 동작
   useEffect(() => {
+    if (!startDashboard) return;
     const interval = setInterval(() => {
       if (mainLogsRef.current.length > 0) {
         const start = mainLogCursorRef.current;
@@ -200,7 +215,7 @@ export default function Index() {
       }
     }, 100);
     return () => clearInterval(interval);
-  }, []);
+  }, [startDashboard]);
 
   return (
     <Dashboard
