@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
 import LocationPin from "./LocationPin";
+import { Button } from "@/components/ui/button";
 
 interface PinGroup {
   x: number;
@@ -591,7 +592,7 @@ const VERTEX_SHADER = `
     gl_PointSize = 7.0;
     
     v_color = a_color;
-    v_alpha = 1.0 - smoothstep(0.7, 1.0, t);
+    v_alpha = 1.0;
   }
 `;
 
@@ -636,6 +637,15 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
   const containerRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<AnimParticle[]>([]);
 
+  const [speed, setSpeed] = React.useState(1.0);
+  const speedRef = useRef(1.0);
+  const virtualTimeRef = useRef(0.0);
+  const lastFrameTimeRef = useRef(performance.now());
+
+  useEffect(() => {
+    speedRef.current = speed;
+  }, [speed]);
+
   const CIRCLE_RADIUS = 11.5; // 23px / 2
 
   useImperativeHandle(ref, () => ({
@@ -644,13 +654,13 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
       const toNode = SHARDS[toShardId]?.find(n => n.num === toNodeId);
       if (fromNode && toNode) {
         const color = COLOR_MAP[category || "default"] || COLOR_MAP["default"];
-        const duration = 800 + Math.random() * 20;
+        const duration = 50;
         particlesRef.current.push({
           fromX: fromNode.x + CIRCLE_RADIUS,  // 중앙 보정
           fromY: fromNode.y + CIRCLE_RADIUS,  // 중앙 보정
           toX: toNode.x + CIRCLE_RADIUS,      // 중앙 보정
           toY: toNode.y + CIRCLE_RADIUS,      // 중앙 보정
-          startTime: performance.now(),
+          startTime: virtualTimeRef.current,
           duration,
           r: color[0], g: color[1], b: color[2],
         });
@@ -692,8 +702,7 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
     gl.linkProgram(program);
 
     const loc = {
-      a_from: gl.getAttribLocation(program, "a_from"),
-      a_to: gl.getAttribLocation(program, "a_to"),
+      a_from: gl.getAttribLocation(program, "a_from"),      a_to: gl.getAttribLocation(program, "a_to"),
       a_startTime: gl.getAttribLocation(program, "a_startTime"),
       a_duration: gl.getAttribLocation(program, "a_duration"),
       a_color: gl.getAttribLocation(program, "a_color"),
@@ -709,9 +718,16 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
     let animId: number;
     const data = new Float32Array(MAX_PARTICLES * FLOATS_PER_PARTICLE);
 
+    lastFrameTimeRef.current = performance.now();
+
     const render = () => {
       const now = performance.now();
-      particlesRef.current = particlesRef.current.filter(p => now - p.startTime < p.duration);
+      const delta = now - lastFrameTimeRef.current;
+      lastFrameTimeRef.current = now;
+      virtualTimeRef.current += delta * speedRef.current;
+      const vTime = virtualTimeRef.current;
+
+      particlesRef.current = particlesRef.current.filter(p => vTime - p.startTime < p.duration);
       
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -730,7 +746,7 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
       gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
       gl.bufferData(gl.ARRAY_BUFFER, data.subarray(0, particles.length * FLOATS_PER_PARTICLE), gl.DYNAMIC_DRAW);
       gl.useProgram(program);
-      gl.uniform1f(loc.u_time, now);
+      gl.uniform1f(loc.u_time, vTime);
       gl.uniform2f(loc.u_resolution, canvas.width, canvas.height);
 
       const stride = FLOATS_PER_PARTICLE * 4;
@@ -755,6 +771,35 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
 
   return (
     <div className="relative w-full h-full bg-[#CDE0EB] flex items-center justify-center overflow-hidden">
+      {(activeTab === 3 || activeTab === 1) && (
+        <div
+          style={{
+            position: "absolute",
+            top: "20px",
+            left: "1000px",
+            zIndex: 50,
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            backgroundColor: "#E9E9EA",
+            padding: "8px",
+            border: "1px solid #000",
+          }}
+        >
+          <span style={{ fontWeight: "600", color: "#000", marginRight: "4px" }}>Speed:</span>
+          {[1.0, 0.5, 0.2, 0.1].map((s) => (
+             <Button
+               key={s}
+               size="sm"
+               variant={speed === s ? "default" : "outline"}
+               onClick={() => setSpeed(s)}
+               className="h-7 px-2 text-xs"
+             >
+               {s}x
+             </Button>
+          ))}
+        </div>
+      )}
       <div
         ref={containerRef}
         className="relative bg-[#CDE0EB] overflow-visible flex-shrink-0"
@@ -885,8 +930,8 @@ const WorldMap = forwardRef<WorldMapHandle, WorldMapProps>(({ showShardNumbers =
         {/* 33개 샤드 번호 표시 (절대좌표) */}
         {showShardNumbers &&
           SHARDS.map((nodes, shardId) => {
-            // Tab 3: Only show 0, 7, 21
-            if (activeTab === 3 && ![0, 7, 21].includes(shardId)) return null;
+            // Tab 3: Only show 7
+            if (activeTab === 3 && shardId !== 7) return null;
             
             return nodes.map((node, idx) => (
               <div

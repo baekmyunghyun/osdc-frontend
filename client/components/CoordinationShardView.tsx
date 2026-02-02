@@ -94,7 +94,7 @@ const ShardNode: React.FC<{ node: NodeData }> = ({ node }) => {
             top: "50%",
             transform: "translate(-50%, -50%)",
             pointerEvents: "none",
-            animationDuration: node.duration || "2s",
+            animationDuration: node.duration || "1s",
             opacity: node.isActive ? 1 : 0,
             transition: "opacity 0.2s",
           }}

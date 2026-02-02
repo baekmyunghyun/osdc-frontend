@@ -137,7 +137,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 right: "0px",
                 zIndex: 10,
                 width: "196px",
-                height: "120px",
+                height: activeTab === 3 ? "auto" : "120px",
                 padding: "15px",
                 backgroundColor: "#E9E9EA",
                 border: "1px solid #000",
@@ -211,30 +211,32 @@ const Dashboard: React.FC<DashboardProps> = ({
                 </div>
 
                 {/* Shard Message */}
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <svg
-                    width="8"
-                    height="8"
-                    viewBox="0 0 8 8"
-                    fill="none"
-                  >
-                    <circle cx="4" cy="4" r="4" fill="#0000FF" />
-                  </svg>
+                {activeTab !== 3 && (
                   <div
-                    style={{
-                      color: "#000",
-                      fontFamily:
-                        "Inter, -apple-system, Roboto, Helvetica, sans-serif",
-                      fontSize: "20px",
-                      fontWeight: "600",
-                      lineHeight: "20px",
-                    }}
+                    style={{ display: "flex", alignItems: "center", gap: "8px" }}
                   >
-                    shard message
+                    <svg
+                      width="8"
+                      height="8"
+                      viewBox="0 0 8 8"
+                      fill="none"
+                    >
+                      <circle cx="4" cy="4" r="4" fill="#0000FF" />
+                    </svg>
+                    <div
+                      style={{
+                        color: "#000",
+                        fontFamily:
+                          "Inter, -apple-system, Roboto, Helvetica, sans-serif",
+                        fontSize: "20px",
+                        fontWeight: "600",
+                        lineHeight: "20px",
+                      }}
+                    >
+                      shard message
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           )}
